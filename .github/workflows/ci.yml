@@ -35,12 +35,12 @@ jobs:
         
       - name: Run linting
         run: pnpm lint
+
+      - name: Build packages
+        run: pnpm build
         
       - name: Run type checking
         run: pnpm -r exec tsc --noEmit
-        
-      - name: Build packages
-        run: pnpm build
         
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
