@@ -10,3 +10,6 @@ export const isString = (
 
 export const key = (option: SimpleSelectOption | string) =>
   isString(option) ? option : option.key;
+
+export const value = (option: SimpleSelectOption | string) =>
+  isString(option) ? option : option.value;

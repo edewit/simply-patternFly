@@ -1,3 +1,4 @@
 export { FormLabel, type FieldProps } from "./FormLabel";
-export { SingleSelect } from "./SingleSelect";
+export { MultiSelect } from "./MultiSelect";
 export { Page } from "./Page";
+export { SingleSelect } from "./SingleSelect";

@@ -7,14 +7,16 @@ import {
   MastheadBrand,
   MastheadLogo,
   MastheadMain,
+  MultiSelect,
   Page,
   PageSection,
-  Title
+  Title,
 } from "@simply-patternfly/core";
 import {
   SingleSelectField,
   TextField,
 } from "@simply-patternfly/react-hook-form";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface FormData {
@@ -25,6 +27,16 @@ interface FormData {
 }
 
 function App() {
+  const [selectedOptions, setSelectedOptions] = useState<string>("");
+  const options = useMemo<string[]>(() => [
+    "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia",
+    "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland",
+    "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
+    "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
+    "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
+  ], []);
+  const [filteredOptions, setFilteredOptions] = useState<string[]>(options);
+
   const { control, handleSubmit, reset } = useForm<FormData>({
     mode: "onChange",
     defaultValues: {
@@ -100,6 +112,15 @@ function App() {
             label="Gender"
             options={["male", "female"]}
             control={control}
+          />
+
+          <MultiSelect
+            options={filteredOptions}
+            onFilter={(value) => {
+              setFilteredOptions(options.filter((option) => option.toLowerCase().includes(value.toLowerCase())));
+            }}
+            selections={selectedOptions ? [selectedOptions] : []}
+            onSelect={setSelectedOptions}
           />
 
           <ActionGroup>

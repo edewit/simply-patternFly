@@ -26,3 +26,10 @@ export type SingleSelectProps = Omit<
   isDisabled?: boolean;
   onSelect?: (value: string) => void;
 };
+
+export type Variant = `${SelectVariant}`;
+
+export enum SelectVariant {
+  typeahead = "typeahead",
+  typeaheadMulti = "typeaheadMulti",
+}
