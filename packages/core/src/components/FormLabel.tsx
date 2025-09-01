@@ -1,4 +1,4 @@
-import { FormGroup, FormGroupProps } from "@patternfly/react-core";
+import { FormGroup, FormGroupProps, FormHelperText, HelperText, HelperTextItem } from "@patternfly/react-core";
 import { PropsWithChildren, ReactNode } from "react";
 import { FormErrorText } from "./FormErrorText";
 import { HelpItem } from "./HelpItem";
@@ -9,6 +9,7 @@ export type FieldProps = {
   name: string;
   labelIcon?: string | ReactNode;
   error?: string;
+  helperText?: string;
   isRequired?: boolean;
 };
 
@@ -20,6 +21,7 @@ export const FormLabel = ({
   label,
   labelIcon,
   error,
+  helperText,
   children,
   ...rest
 }: PropsWithChildren<FormLabelProps>) => (
@@ -32,8 +34,13 @@ export const FormLabel = ({
     {...rest}
   >
     {children}
-    {error && (
-      <FormErrorText data-testid={`${name}-helper`} message={error} />
+    {error && <FormErrorText data-testid={`${name}-helper`} message={error} />}
+    {helperText && (
+      <FormHelperText>
+        <HelperText>
+          <HelperTextItem>{helperText}</HelperTextItem>
+        </HelperText>
+      </FormHelperText>
     )}
   </FormGroup>
 );

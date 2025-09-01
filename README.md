@@ -1,4 +1,4 @@
-# Simply PatternFly - Enhanced PatternFly Components
+# Simply PatternFly - Enhanced PatternFly Components <img src="packages/example/src/assets/logo.svg" alt="Simply PatternFly Logo" width="48" height="auto" align="left" style="margin-right: 20px">
 
 A collection of enhanced PatternFly components designed to be more developer-friendly and easier to use than the standard PatternFly offerings. This multi-module workspace provides simplified, opinionated components that maintain PatternFly's design system while reducing boilerplate and complexity.
 

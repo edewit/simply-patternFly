@@ -1,5 +1,4 @@
-import { SelectProps } from "@patternfly/react-core";
-
+import { LabelGroupProps, SelectProps } from "@patternfly/react-core";
 
 export type OptionType = string[] | SimpleSelectOption[];
 
@@ -8,7 +7,7 @@ export type SimpleSelectOption = {
   value: string;
 };
 
-export type SingleSelectProps = Omit<
+type CommonSelectProps = Omit<
   SelectProps,
   | "toggle"
   | "selections"
@@ -18,13 +17,26 @@ export type SingleSelectProps = Omit<
   | "onFilter"
   | "variant"
 > & {
-  name: string;
   value?: string;
-  error?: string;
   options: OptionType;
   selectedOptions?: OptionType;
   isDisabled?: boolean;
+  status?: "success" | "warning" | "danger";
   onSelect?: (value: string) => void;
+};
+
+export type SingleSelectProps = CommonSelectProps & {};
+
+export type MultiSelectProps = CommonSelectProps & {
+  variant?: Variant;
+  onFilter?: (value: string) => void;
+  onClear?: () => void;
+  menuAppendTo?: string;
+  placeholderText?: string;
+  selections?: string[];
+  chipGroupProps?: Omit<LabelGroupProps, "children" | "ref">;
+  footer?: React.ReactNode;
+  options: OptionType;
 };
 
 export type Variant = `${SelectVariant}`;

@@ -1,10 +1,7 @@
 import {
-  FormHelperText,
-  HelperText,
-  HelperTextItem,
   TextInput,
   TextInputProps,
-  ValidatedOptions,
+  ValidatedOptions
 } from "@patternfly/react-core";
 import { FormLabel } from "@simply-patternfly/core";
 import {
@@ -14,8 +11,8 @@ import {
   UseControllerProps,
   useController,
 } from "react-hook-form";
-import { getRuleValue } from "../util/getRuleValue";
 import { FieldProps } from "../types";
+import { getRuleValue } from "../util/getRuleValue";
 
 export type TextFieldProps<
   T extends FieldValues,
@@ -48,6 +45,7 @@ export const TextField = <
       labelIcon={labelIcon}
       isRequired={required}
       error={fieldState.error?.message}
+      helperText={helperText}
     >
       <TextInput
         {...rest}
@@ -60,13 +58,6 @@ export const TextField = <
         }
         isDisabled={props.isDisabled}
       />
-      {helperText && (
-        <FormHelperText>
-          <HelperText>
-            <HelperTextItem>{helperText}</HelperTextItem>
-          </HelperText>
-        </FormHelperText>
-      )}
     </FormLabel>
   );
 };

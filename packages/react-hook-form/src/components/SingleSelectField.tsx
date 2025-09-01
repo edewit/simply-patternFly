@@ -1,8 +1,5 @@
 import {
-  FormHelperText,
   FormLabel,
-  HelperText,
-  HelperTextItem,
   SingleSelect,
   SingleSelectProps,
 } from "@simply-patternfly/core";
@@ -11,10 +8,10 @@ import {
   FieldValues,
   PathValue,
   useController,
-  UseControllerProps
+  UseControllerProps,
 } from "react-hook-form";
-import { getRuleValue } from "../util/getRuleValue";
 import { FieldProps } from "../types";
+import { getRuleValue } from "../util/getRuleValue";
 
 export type SingleSelectFieldProps<
   T extends FieldValues,
@@ -30,11 +27,12 @@ export const SingleSelectField = <
 >(
   props: SingleSelectFieldProps<T, P>
 ) => {
-  const { rules, control, defaultValue, labelIcon, helperText, ...rest } = props;
+  const { rules, control, defaultValue, labelIcon, helperText, ...rest } =
+    props;
   const defaultVal = defaultValue ?? ("" as PathValue<T, P>);
   const required = !!getRuleValue(rules?.required);
 
-  const { field, fieldState, } = useController({
+  const { field, fieldState } = useController({
     ...rest,
     control,
     defaultValue: defaultVal,
@@ -48,15 +46,14 @@ export const SingleSelectField = <
       labelIcon={labelIcon}
       isRequired={required}
       error={fieldState.error?.message}
+      helperText={helperText}
     >
-      <SingleSelect {...rest} value={field.value} onSelect={field.onChange} />
-      {helperText && (
-        <FormHelperText>
-          <HelperText>
-            <HelperTextItem>{helperText}</HelperTextItem>
-          </HelperText>
-        </FormHelperText>
-      )}
+      <SingleSelect
+        {...rest}
+        value={field.value}
+        onSelect={field.onChange}
+        status={fieldState.error ? "danger" : undefined}
+      />
     </FormLabel>
   );
 };

@@ -1,9 +1,8 @@
 import {
   MenuToggle,
-  MenuToggleStatus,
   Select,
   SelectList,
-  SelectOption,
+  SelectOption
 } from "@patternfly/react-core";
 import { useState } from "react";
 import { SingleSelectProps } from "../types";
@@ -11,19 +10,17 @@ import { isSelectBasedOptions, isString, key } from "../utils/select";
 
 export const SingleSelect = ({
   id,
-  name,
   value = "",
   options,
   selectedOptions = [],
-  error,
   isDisabled,
   onSelect,
+  status,
   ...rest
 }: SingleSelectProps) => {
   const [open, setOpen] = useState(false);
 
   return (
-    
       <Select
         {...rest}
         variant="default"
@@ -36,13 +33,13 @@ export const SingleSelect = ({
         }
         toggle={(ref: React.Ref<HTMLButtonElement>) => (
           <MenuToggle
-            id={id || name}
+            id={id ?? ""}
             ref={ref}
             onClick={() => setOpen(!open)}
             isExpanded={open}
             isFullWidth
-            status={error ? MenuToggleStatus.danger : undefined}
-            aria-label={name}
+            status={status}
+            aria-label={id}
             isDisabled={isDisabled}
           >
             {isSelectBasedOptions(options)
@@ -60,7 +57,7 @@ export const SingleSelect = ({
         }}
         isOpen={open}
       >
-        <SelectList data-testid={`select-${name}`}>
+        <SelectList data-testid={`select-${id ?? ""}`}>
           {[...options, ...selectedOptions].map((option) => (
             <SelectOption key={key(option)} value={key(option)}>
               {isString(option) ? option : option.value}

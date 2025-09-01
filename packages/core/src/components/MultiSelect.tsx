@@ -2,55 +2,34 @@ import {
   Button,
   Label,
   LabelGroup,
-  LabelGroupProps,
   MenuFooter,
   MenuToggle,
-  MenuToggleStatus,
   Select,
   SelectList,
   SelectOption,
-  SelectProps,
   TextInputGroup,
   TextInputGroupMain,
-  TextInputGroupUtilities,
+  TextInputGroupUtilities
 } from "@patternfly/react-core";
 import { TimesIcon } from "@patternfly/react-icons";
 import { useRef, useState } from "react";
-import { OptionType } from "../types";
-import { SelectVariant, Variant } from "../types/select";
+import { MultiSelectProps } from "../types";
+import { SelectVariant } from "../types/select";
 import { isString, key, value } from "../utils/select";
-
-export type MultiSelectProps<> = Omit<
-  SelectProps,
-  "name" | "toggle" | "selected" | "onClick" | "onSelect" | "variant"
-> & {
-  id?: string;
-  onFilter?: (value: string) => void;
-  onClear?: () => void;
-  variant?: Variant;
-  isDisabled?: boolean;
-  menuAppendTo?: string;
-  placeholderText?: string;
-  onSelect?: (value: string) => void;
-  selections?: string[];
-  validated?: "success" | "warning" | "error" | "default";
-  chipGroupProps?: Omit<LabelGroupProps, "children" | "ref">;
-  footer?: React.ReactNode;
-  options: OptionType;
-};
 
 export const MultiSelect = ({
   id,
   onSelect,
   onFilter,
   variant = SelectVariant.typeahead,
-  validated,
+  status,
   placeholderText,
   selections,
   footer,
   isDisabled,
   chipGroupProps,
   options,
+  onClear,
   ...rest
 }: MultiSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -90,7 +69,7 @@ export const MultiSelect = ({
         if (!isOpen) setIsOpen(false);
       }}
       onSelect={(_, value) => {
-        onSelect?.(value as string || "");
+        onSelect?.((value as string) || "");
         onFilter?.("");
         setFilterValue("");
         if (variant === SelectVariant.typeahead) {
@@ -107,14 +86,15 @@ export const MultiSelect = ({
           isDisabled={isDisabled}
           isExpanded={isOpen}
           isFullWidth
-          status={validated === "error" ? MenuToggleStatus.danger : undefined}
+          status={status}
         >
           <TextInputGroup isPlain>
             <TextInputGroupMain
               placeholder={placeholderText}
               value={
-                variant === SelectVariant.typeahead && selections && selections.length > 0
-                  ? (selections[0])
+                variant === SelectVariant.typeahead &&
+                !!selections?.length
+                  ? selections[0]
                   : filterValue
               }
               onClick={toggle}
@@ -136,23 +116,32 @@ export const MultiSelect = ({
                     {selections.map((selection, index: number) => (
                       <Label
                         key={index}
-                        onClick={(ev) => {
+                        onClose={(ev) => {
                           ev.stopPropagation();
                           onSelect?.(selection);
                         }}
                       >
-                        {value(options.find((option) => key(option) === selection) || "" )}
+                        {value(
+                          options.find((option) => key(option) === selection) ||
+                            ""
+                        )}
                       </Label>
                     ))}
                   </LabelGroup>
                 )}
             </TextInputGroupMain>
             <TextInputGroupUtilities>
-              {!!filterValue && (
+              {((variant === SelectVariant.typeahead && !!filterValue) ||
+                (variant === SelectVariant.typeaheadMulti &&
+                  !!selections?.length)) && (
                 <Button
                   variant="plain"
                   onClick={() => {
-                    onSelect?.("");
+                    if (variant === SelectVariant.typeahead) {
+                      onSelect?.("");
+                    } else {
+                      onClear?.();
+                    }
                     setFilterValue("");
                     onFilter?.("");
                     textInputRef?.current?.focus();
