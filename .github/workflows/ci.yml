@@ -42,6 +42,12 @@ jobs:
       - name: Run type checking
         run: pnpm -r exec tsc --noEmit
         
+      - name: Install Playwright browsers
+        run: pnpm --filter core exec playwright install --with-deps
+        
+      - name: Run component tests
+        run: pnpm --filter core test-ct
+        
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         if: matrix.node-version == '22.x'  # Only upload from one Node version
