@@ -1,5 +1,6 @@
 import {
   ActionGroup,
+  AsyncSingleSelect,
   Button,
   Form,
   FormLabel,
@@ -49,6 +50,19 @@ export const SimpleForm = () => {
             }}
           />
         </FormLabel>
+        <AsyncSingleSelect
+          pageSize={5}
+          fetchOptions={(first, max) =>
+            new Promise((resolve) => {
+              setTimeout(() => {
+                resolve({
+                  options: states.slice(first, first + max),
+                  hasMore: first + max < states.length,
+                });
+              }, 2000);
+            })
+          }
+        />
         <ActionGroup>
           <Button variant="primary" type="submit">
             Submit

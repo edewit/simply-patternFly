@@ -2,69 +2,75 @@ import {
   MenuToggle,
   Select,
   SelectList,
-  SelectOption
+  SelectOption,
 } from "@patternfly/react-core";
 import { useState } from "react";
 import { SingleSelectProps } from "../types";
-import { isSelectBasedOptions, isString, key } from "../utils/select";
+import { isSelectBasedOptions, key, value as getValue, LOADER_OPTION_VALUE } from "../utils/select";
 
 export const SingleSelect = ({
   id,
   value = "",
   options,
-  selectedOptions = [],
   isDisabled,
   onSelect,
   status,
+  children,
   ...rest
 }: SingleSelectProps) => {
   const [open, setOpen] = useState(false);
 
+  const triggerSelect = (v: string | number | undefined) => {
+    const option = v?.toString() ?? "";
+    if (option === LOADER_OPTION_VALUE) {
+      return;
+    }
+    onSelect?.(option);
+    setOpen(false);
+  };
+
+  const selectedValue = () =>
+    isSelectBasedOptions(options)
+      ? options.find((o) => o.key === value)?.value
+      : value;
+
   return (
-      <Select
-        {...rest}
-        variant="default"
-        onClick={() => setOpen(!open)}
-        onOpenChange={() => setOpen(false)}
-        selected={
-          isSelectBasedOptions(options)
-            ? options.filter((o) => value === o.key).map((o) => o.value)
-            : value
-        }
-        toggle={(ref: React.Ref<HTMLButtonElement>) => (
-          <MenuToggle
-            id={id ?? ""}
-            role="combobox"
-            ref={ref}
-            onClick={() => setOpen(!open)}
-            isExpanded={open}
-            isFullWidth
-            status={status}
-            aria-label={id}
-            isDisabled={isDisabled}
-          >
-            {isSelectBasedOptions(options)
-              ? options.find((o) => o.key === value)?.value
-              : value}
-          </MenuToggle>
-        )}
-        onSelect={(
-          _event: React.MouseEvent<Element, MouseEvent> | undefined,
-          v: string | number | undefined
-        ) => {
-          const option = v?.toString() ?? "";
-          onSelect?.(option);
-          setOpen(false);
-        }}
-        isOpen={open}
-      >
-        <SelectList data-testid={`select-${id ?? ""}`}>
-          {[...options, ...selectedOptions].map((option) => (
-            <SelectOption key={key(option)} value={key(option)}>
-              {isString(option) ? option : option.value}
+    <Select
+      {...rest}
+      variant="default"
+      onClick={() => setOpen(!open)}
+      onOpenChange={() => setOpen(false)}
+      selected={selectedValue()}
+      toggle={(ref: React.Ref<HTMLButtonElement>) => (
+        <MenuToggle
+          id={id ?? ""}
+          role="combobox"
+          ref={ref}
+          onClick={() => setOpen(!open)}
+          isExpanded={open}
+          isFullWidth
+          status={status}
+          aria-label={id}
+          isDisabled={isDisabled}
+        >
+          {selectedValue()}
+        </MenuToggle>
+      )}
+      onSelect={(_, v) => triggerSelect(v)}
+      isOpen={open}
+    >
+      <SelectList data-testid={`select-${id ?? ""}`}>
+        {children ||
+          options.map((option) => (
+            <SelectOption
+              key={key(option)}
+              value={key(option)}
+              isSelected={value === key(option)}
+            >
+              {getValue(option)}
             </SelectOption>
           ))}
-        </SelectList>
-      </Select>
+      </SelectList>
+    </Select>
   );
 };

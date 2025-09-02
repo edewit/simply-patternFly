@@ -1,5 +1,7 @@
 import { OptionType, SimpleSelectOption } from "../types";
 
+export const LOADER_OPTION_VALUE = "loader";
+
 export const isSelectBasedOptions = (
   options: OptionType,
 ): options is SimpleSelectOption[] => typeof options[0] !== "string";

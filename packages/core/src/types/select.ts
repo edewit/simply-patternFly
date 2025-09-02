@@ -25,7 +25,7 @@ type CommonSelectProps = Omit<
   onSelect?: (value: string) => void;
 };
 
-export type SingleSelectProps = CommonSelectProps & {};
+export type SingleSelectProps = CommonSelectProps;
 
 export type MultiSelectProps = CommonSelectProps & {
   variant?: Variant;
