@@ -34,6 +34,7 @@ export const SingleSelect = ({
         toggle={(ref: React.Ref<HTMLButtonElement>) => (
           <MenuToggle
             id={id ?? ""}
+            role="combobox"
             ref={ref}
             onClick={() => setOpen(!open)}
             isExpanded={open}

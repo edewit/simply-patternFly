@@ -33,6 +33,7 @@ const App = () => {
                 <Brand
                   src={logo}
                   alt="Simply PatternFly"
+                  style={{ marginRight: "10px" }}
                 />
                 Simply PatternFly
               </MastheadLogo>

@@ -1,4 +1,11 @@
-import { ActionGroup, Button, Form, MultiSelect, Title } from "@simply-patternfly/core";
+import {
+  ActionGroup,
+  Button,
+  Form,
+  FormLabel,
+  MultiSelect,
+  Title,
+} from "@simply-patternfly/core";
 import { useState } from "react";
 import { states } from "./constants";
 
@@ -6,7 +13,7 @@ export const SimpleForm = () => {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [filteredOptions, setFilteredOptions] = useState<string[]>(states);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement> ) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(selectedOptions);
   };
@@ -15,31 +22,33 @@ export const SimpleForm = () => {
     <>
       <Title headingLevel="h2">Simple Form</Title>
       <Form isHorizontal onSubmit={onSubmit}>
-        <MultiSelect
-          variant="typeaheadMulti"
-          options={filteredOptions}
-          onFilter={(value) => {
-            setFilteredOptions(
-              states.filter((option) =>
-                option.toLowerCase().includes(value.toLowerCase())
-              )
-            );
-          }}
-          selections={selectedOptions}
-          onSelect={(value) => {
-            if (selectedOptions.includes(value)) {
-              setSelectedOptions(
-                selectedOptions.filter((option) => option !== value)
+        <FormLabel name="states" label="States">
+          <MultiSelect
+            id="states"
+            variant="typeaheadMulti"
+            options={filteredOptions}
+            onFilter={(value) => {
+              setFilteredOptions(
+                states.filter((option) =>
+                  option.toLowerCase().startsWith(value.toLowerCase())
+                )
               );
-            } else {
-              setSelectedOptions([...selectedOptions, value]);
-            }
-          }}
-          onClear={() => {
-            setSelectedOptions([]);
-          }}
-        />
-
+            }}
+            selections={selectedOptions}
+            onSelect={(value) => {
+              if (selectedOptions.includes(value)) {
+                setSelectedOptions(
+                  selectedOptions.filter((option) => option !== value)
+                );
+              } else {
+                setSelectedOptions([...selectedOptions, value]);
+              }
+            }}
+            onClear={() => {
+              setSelectedOptions([]);
+            }}
+          />
+        </FormLabel>
         <ActionGroup>
           <Button variant="primary" type="submit">
             Submit
