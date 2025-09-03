@@ -3,6 +3,7 @@ import "./styles.css";
 
 // Core Simply PatternFly components and utilities
 export * from "./components";
+export * from "./hooks";
 export * from "./types";
 export * from "./utils";
 

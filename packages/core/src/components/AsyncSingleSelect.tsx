@@ -1,70 +1,25 @@
 import { SelectOption, Spinner } from "@patternfly/react-core";
-import { useCallback, useEffect, useState } from "react";
-import { OptionType, SingleSelectProps } from "../types";
+import { SingleSelectProps } from "../types";
 import { key, LOADER_OPTION_VALUE, value } from "../utils/select";
 import { SingleSelect } from "./SingleSelect";
+import { useAsyncSelect, UseAsyncSelectOptions } from "../hooks/useAsyncSelect";
 
-export type AsyncSingleSelectProps = Omit<SingleSelectProps, "options"> & {
-  pageSize?: number;
-  fetchOptions: (first: number, max: number) => Promise<ResponseType>;
-};
-
-export type ResponseType = {
-  options: OptionType;
-  hasMore: boolean;
-};
+export type AsyncSingleSelectProps = Omit<SingleSelectProps, "options"> & UseAsyncSelectOptions;
 
 export const AsyncSingleSelect = ({
-  onSelect,
   fetchOptions,
   pageSize = 10,
   ...rest
 }: AsyncSingleSelectProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [options, setOptions] = useState<OptionType>([]);
-  const [first, setFirst] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-
-  const loadOptions = useCallback(
-    async (
-      startIndex: number = 0,
-    ) => {
-      
-      setIsLoading(true);
-      const response = await fetchOptions(startIndex, pageSize);
-      setIsLoading(false);
-
-      if (startIndex === 0) {
-        setOptions(response.options);
-      } else {
-        setOptions(
-          (prevOptions) => [...prevOptions, ...response.options] as OptionType
-        );
-      }
-
-      setFirst(startIndex + pageSize);
-      setHasMore(response.hasMore);
-    },
-    [fetchOptions, pageSize]
-  );
-
-  const fetchMoreOptions = useCallback(
-    async (event?: React.MouseEvent) => {
-      event?.stopPropagation();
-      event?.preventDefault();
-      await loadOptions(first);
-    },
-    [loadOptions, first]
-  );
-
-  useEffect(() => {
-    loadOptions();
-  }, [loadOptions]);
+  const { isLoading, options, hasMore, fetchMoreOptions } = useAsyncSelect({
+    fetchOptions,
+    pageSize,
+  });
 
   return (
-    <SingleSelect options={[]} onSelect={onSelect} {...rest}>
+    <SingleSelect options={options} {...rest}>
       {options.map((option) => (
-        <SelectOption key={key(option)} value={key(option)}>
+        <SelectOption key={key(option)} value={key(option)} isSelected={rest.value === key(option)}>
           {value(option)}
         </SelectOption>
       ))}

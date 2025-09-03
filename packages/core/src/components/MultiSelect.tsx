@@ -15,7 +15,7 @@ import { TimesIcon } from "@patternfly/react-icons";
 import { useRef, useState } from "react";
 import { MultiSelectProps } from "../types";
 import { SelectVariant } from "../types/select";
-import { key, value, LOADER_OPTION_VALUE } from "../utils/select";
+import { LOADER_OPTION_VALUE, isSelectBasedOptions, key, value } from "../utils/select";
 
 export const MultiSelect = ({
   id,
@@ -116,18 +116,15 @@ export const MultiSelect = ({
               {variant === SelectVariant.typeaheadMulti &&
                 Array.isArray(selections) && (
                   <LabelGroup {...chipGroupProps}>
-                    {selections.map((selection, index: number) => (
+                    {selections.map((selection) => (
                       <Label
-                        key={index}
+                        key={selection}
                         onClose={(ev) => {
                           ev.stopPropagation();
                           onSelect?.(selection);
                         }}
                       >
-                        {value(
-                          options.find((option) => key(option) === selection) ||
-                            ""
-                        )}
+                        {isSelectBasedOptions(options) ? options.find((option) => key(option) === selection)?.value : selection}
                       </Label>
                     ))}
                   </LabelGroup>
