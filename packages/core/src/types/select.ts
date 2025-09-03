@@ -33,7 +33,7 @@ export type MultiSelectProps = CommonSelectProps & {
   onClear?: () => void;
   menuAppendTo?: string;
   placeholderText?: string;
-  selections?: string[];
+  selections?: string[] | SimpleSelectOption[];
   chipGroupProps?: Omit<LabelGroupProps, "children" | "ref">;
   footer?: React.ReactNode;
   options: OptionType;

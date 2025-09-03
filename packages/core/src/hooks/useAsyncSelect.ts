@@ -1,22 +1,25 @@
 import { useCallback, useEffect, useState } from "react";
 import { OptionType } from "../types";
 
-type AsyncSelectResponse = {
-  options: OptionType;
+type AsyncSelectResponse<T extends OptionType> = {
+  options: T;
   hasMore: boolean;
 };
 
-export type UseAsyncSelectOptions = {
-  fetchOptions: (first: number, max: number, filter?: string) => Promise<AsyncSelectResponse>;
+export type UseAsyncSelectOptions<T extends OptionType = OptionType> = {
+  fetchOptions: (first: number, max: number, filter?: string) => Promise<AsyncSelectResponse<T>>;
   pageSize?: number;
 };
 
-export const useAsyncSelect = ({
+export const useAsyncSelect = <T extends OptionType>({
   fetchOptions,
   pageSize = 10,
-}: UseAsyncSelectOptions) => {
+}: {
+  fetchOptions: (first: number, max: number, filter?: string) => Promise<{options: T, hasMore: boolean}>;
+  pageSize?: number;
+}) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [options, setOptions] = useState<OptionType>([]);
+  const [options, setOptions] = useState<T>([] as unknown as T);
   const [first, setFirst] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [filter, setFilter] = useState("");
@@ -31,7 +34,7 @@ export const useAsyncSelect = ({
         setOptions(response.options);
       } else {
         setOptions(
-          (prevOptions) => [...prevOptions, ...response.options] as OptionType
+          (prevOptions) => [...prevOptions, ...response.options] as T
         );
       }
 
@@ -53,7 +56,7 @@ export const useAsyncSelect = ({
   const updateFilter = useCallback(
     (value: string): void => {
       setFilter(value);
-      setOptions([]);
+      setOptions([] as unknown as T);
       setFirst(0);
       loadOptions(0, value);
     },

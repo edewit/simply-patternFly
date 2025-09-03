@@ -1,3 +1,4 @@
+import type { SimpleSelectOption } from "@simply-patternfly/core";
 import {
   ActionGroup,
   AsyncMultiSelect,
@@ -6,27 +7,49 @@ import {
   Form,
   FormLabel,
   MultiSelect,
+  SingleSelect,
   Title,
 } from "@simply-patternfly/core";
 import { useState } from "react";
-import { states } from "./constants";
+import { states, statesWithKey } from "./constants";
 
 export const SimpleForm = () => {
+  const [selected, setSelected] = useState<string>("");
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [filteredOptions, setFilteredOptions] = useState<string[]>(states);
-  const [asyncSingleSelectedOptions, setAsyncSingleSelectedOptions] = useState<string>("");
-  const [asyncSelectedOptions, setAsyncSelectedOptions] = useState<string[]>([]);
+  const [asyncSingleSelectedOptions, setAsyncSingleSelectedOptions] =
+    useState<string>("");
+  const [asyncSelectedOptions, setAsyncSelectedOptions] = useState<string[]>(
+    []
+  );
+  const [asyncSelectedOptionsWithKey, setAsyncSelectedOptionsWithKey] =
+    useState<SimpleSelectOption[]>([]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(selectedOptions);
+    console.log(
+      selected,
+      selectedOptions,
+      asyncSelectedOptions,
+      asyncSelectedOptionsWithKey,
+      asyncSingleSelectedOptions
+    );
   };
 
   return (
     <>
       <Title headingLevel="h2">Simple Form</Title>
       <Form isHorizontal onSubmit={onSubmit}>
-        <FormLabel name="states" label="States">
+        <FormLabel name="states" label="Single Select">
+          <SingleSelect
+            value={selected}
+            options={statesWithKey}
+            onSelect={(value) => {
+              setSelected(value);
+            }}
+          />
+        </FormLabel>
+        <FormLabel name="states" label="Multi Select">
           <MultiSelect
             id="states"
             variant="typeaheadMulti"
@@ -60,7 +83,7 @@ export const SimpleForm = () => {
           }}
           pageSize={5}
           fetchOptions={(first, max) =>
-            new Promise((resolve) => {
+            new Promise<{ options: string[]; hasMore: boolean }>((resolve) => {
               setTimeout(() => {
                 resolve({
                   options: states.slice(first, first + max),
@@ -70,12 +93,13 @@ export const SimpleForm = () => {
             })
           }
         />
-        <AsyncMultiSelect
+        <AsyncMultiSelect<string[]>
           variant="typeaheadMulti"
           selections={asyncSelectedOptions}
           onSelect={(value) => {
             if (asyncSelectedOptions.includes(value)) {
-              setAsyncSelectedOptions(asyncSelectedOptions.filter((option) => option !== value)
+              setAsyncSelectedOptions(
+                asyncSelectedOptions.filter((option) => option !== value)
               );
             } else {
               setAsyncSelectedOptions([...asyncSelectedOptions, value]);
@@ -83,7 +107,7 @@ export const SimpleForm = () => {
           }}
           pageSize={7}
           fetchOptions={(first, max, filter) =>
-            new Promise((resolve) => {
+            new Promise<{ options: string[]; hasMore: boolean }>((resolve) => {
               setTimeout(() => {
                 const filteredStates = states.filter((state) =>
                   state.toLowerCase().startsWith(filter?.toLowerCase() || "")
@@ -96,15 +120,64 @@ export const SimpleForm = () => {
             })
           }
         />
+        <FormLabel
+          name="statesWithKey"
+          label="States with Key (Object Options)"
+        >
+          <AsyncMultiSelect<SimpleSelectOption[]>
+            variant="typeaheadMulti"
+            selections={asyncSelectedOptionsWithKey}
+            onSelect={(value) => {
+              if (
+                asyncSelectedOptionsWithKey
+                  .map((option) => option.key)
+                  .includes(value.key)
+              ) {
+                setAsyncSelectedOptionsWithKey(
+                  asyncSelectedOptionsWithKey.filter(
+                    (option) => option.key !== value.key
+                  )
+                );
+              } else {
+                setAsyncSelectedOptionsWithKey([
+                  ...asyncSelectedOptionsWithKey,
+                  value,
+                ]);
+              }
+            }}
+            pageSize={5}
+            fetchOptions={(first, max, filter) =>
+              new Promise<{ options: SimpleSelectOption[]; hasMore: boolean }>(
+                (resolve) => {
+                  setTimeout(() => {
+                    const filteredStates = statesWithKey.filter((state) =>
+                      state.value
+                        .toLowerCase()
+                        .startsWith(filter?.toLowerCase() || "")
+                    );
+                    resolve({
+                      options: filteredStates.slice(first, first + max),
+                      hasMore: first + max < statesWithKey.length,
+                    });
+                  }, 2000);
+                }
+              )
+            }
+          />
+        </FormLabel>
         <ActionGroup>
           <Button variant="primary" type="submit">
             Submit
           </Button>
-          <Button variant="link" onClick={() => {
-            setSelectedOptions([]);
-            setAsyncSelectedOptions([]);
-            setAsyncSingleSelectedOptions("");
-          }}>
+          <Button
+            variant="link"
+            onClick={() => {
+              setSelectedOptions([]);
+              setAsyncSelectedOptions([]);
+              setAsyncSelectedOptionsWithKey([]);
+              setAsyncSingleSelectedOptions("");
+            }}
+          >
             Reset
           </Button>
         </ActionGroup>

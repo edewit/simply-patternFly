@@ -1,29 +1,59 @@
 import { SelectOption, Spinner } from "@patternfly/react-core";
-import { MultiSelectProps } from "../types";
+import { MultiSelectProps, OptionType, SimpleSelectOption } from "../types";
 import { key, LOADER_OPTION_VALUE, value } from "../utils/select";
 import { MultiSelect } from "./MultiSelect";
-import { useAsyncSelect, UseAsyncSelectOptions } from "../hooks/useAsyncSelect";
+import { useAsyncSelect } from "../hooks/useAsyncSelect";
 
-export type AsyncMultiSelectProps = Omit<MultiSelectProps, "options" | "onFilter"> & UseAsyncSelectOptions;
+export type AsyncMultiSelectProps<T extends OptionType> = Omit<
+  MultiSelectProps,
+  "options" | "onFilter" | "onSelect" | "selections"
+> & {
+  fetchOptions: (
+    first: number,
+    max: number,
+    filter?: string
+  ) => Promise<{ options: T; hasMore: boolean }>;
+  onSelect: (value: T extends string[] ? string : SimpleSelectOption) => void;
+  selections: T extends string[] ? string[] : SimpleSelectOption[];
+  pageSize?: number;
+};
 
-export const AsyncMultiSelect = ({
+export const AsyncMultiSelect = <T extends OptionType>({
   fetchOptions,
   pageSize = 10,
+  onSelect,
   ...rest
-}: AsyncMultiSelectProps) => {
-  const { isLoading, options, hasMore, fetchMoreOptions, updateFilter } = useAsyncSelect({
-    fetchOptions,
-    pageSize,
-  });
+}: AsyncMultiSelectProps<T>) => {
+  const { isLoading, options, hasMore, fetchMoreOptions, updateFilter } =
+    useAsyncSelect<T>({
+      fetchOptions,
+      pageSize,
+    });
 
   return (
     <MultiSelect
-      options={options}
-      onFilter={updateFilter}
       {...rest}
+      options={[]}
+      onFilter={updateFilter}
+      onSelect={(value) => {
+        if (options.length === 0 || typeof options[0] === "string") {
+          onSelect?.(value as T extends string[] ? string : SimpleSelectOption);
+        } else {
+          const foundOption = options.find((option) => key(option) === value)!;
+          onSelect?.(
+            foundOption as T extends string[] ? string : SimpleSelectOption
+          );
+        }
+      }}
     >
       {options.map((option) => (
-        <SelectOption key={key(option)} value={key(option)} isSelected={rest.selections?.includes(key(option))}>
+        <SelectOption
+          key={key(option)}
+          value={key(option)}
+          isSelected={rest.selections
+            .map((selection) => key(selection))
+            .includes(key(option))}
+        >
           {value(option)}
         </SelectOption>
       ))}

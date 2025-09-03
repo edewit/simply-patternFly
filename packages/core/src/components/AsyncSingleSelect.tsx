@@ -1,17 +1,20 @@
 import { SelectOption, Spinner } from "@patternfly/react-core";
-import { SingleSelectProps } from "../types";
+import { SingleSelectProps, OptionType } from "../types";
 import { key, LOADER_OPTION_VALUE, value } from "../utils/select";
 import { SingleSelect } from "./SingleSelect";
-import { useAsyncSelect, UseAsyncSelectOptions } from "../hooks/useAsyncSelect";
+import { useAsyncSelect } from "../hooks/useAsyncSelect";
 
-export type AsyncSingleSelectProps = Omit<SingleSelectProps, "options"> & UseAsyncSelectOptions;
+export type AsyncSingleSelectProps<T extends OptionType> = Omit<SingleSelectProps, "options"> & {
+  fetchOptions: (first: number, max: number, filter?: string) => Promise<{options: T, hasMore: boolean}>;
+  pageSize?: number;
+};
 
-export const AsyncSingleSelect = ({
+export const AsyncSingleSelect = <T extends OptionType>({
   fetchOptions,
   pageSize = 10,
   ...rest
-}: AsyncSingleSelectProps) => {
-  const { isLoading, options, hasMore, fetchMoreOptions } = useAsyncSelect({
+}: AsyncSingleSelectProps<T>) => {
+  const { isLoading, options, hasMore, fetchMoreOptions } = useAsyncSelect<T>({
     fetchOptions,
     pageSize,
   });

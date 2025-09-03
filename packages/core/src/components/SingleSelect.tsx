@@ -6,7 +6,12 @@ import {
 } from "@patternfly/react-core";
 import { useState } from "react";
 import { SingleSelectProps } from "../types";
-import { isSelectBasedOptions, key, value as getValue, LOADER_OPTION_VALUE } from "../utils/select";
+import {
+  value as getValue,
+  isSelectBasedOptions,
+  key,
+  LOADER_OPTION_VALUE
+} from "../utils/select";
 
 export const SingleSelect = ({
   id,
@@ -31,7 +36,7 @@ export const SingleSelect = ({
 
   const selectedValue = () =>
     isSelectBasedOptions(options)
-      ? options.find((o) => o.key === value)?.value
+      ? options.find((o) => key(o) === value)?.value
       : value;
 
   return (

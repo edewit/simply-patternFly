@@ -15,7 +15,7 @@ import { TimesIcon } from "@patternfly/react-icons";
 import { useRef, useState } from "react";
 import { MultiSelectProps } from "../types";
 import { SelectVariant } from "../types/select";
-import { LOADER_OPTION_VALUE, isSelectBasedOptions, key, value } from "../utils/select";
+import { LOADER_OPTION_VALUE, key, value } from "../utils/select";
 
 export const MultiSelect = ({
   id,
@@ -97,7 +97,7 @@ export const MultiSelect = ({
               placeholder={placeholderText}
               value={
                 variant === SelectVariant.typeahead && !!selections?.length
-                  ? selections[0]
+                  ? value(selections[0])
                   : filterValue
               }
               onClick={toggle}
@@ -118,13 +118,13 @@ export const MultiSelect = ({
                   <LabelGroup {...chipGroupProps}>
                     {selections.map((selection) => (
                       <Label
-                        key={selection}
+                        key={key(selection)}
                         onClose={(ev) => {
                           ev.stopPropagation();
-                          onSelect?.(selection);
+                          onSelect?.(key(selection));
                         }}
                       >
-                        {isSelectBasedOptions(options) ? options.find((option) => key(option) === selection)?.value : selection}
+                        {value(selection)}
                       </Label>
                     ))}
                   </LabelGroup>
@@ -163,7 +163,7 @@ export const MultiSelect = ({
               <SelectOption
                 key={key(option)}
                 value={key(option)}
-                isSelected={selections?.includes(key(option))}
+                isSelected={selections?.map((selection) => key(selection)).includes(key(option))}
               >
                 {value(option)}
               </SelectOption>
