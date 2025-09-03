@@ -9,13 +9,13 @@ import {
   SelectOption,
   TextInputGroup,
   TextInputGroupMain,
-  TextInputGroupUtilities
+  TextInputGroupUtilities,
 } from "@patternfly/react-core";
 import { TimesIcon } from "@patternfly/react-icons";
 import { useRef, useState } from "react";
 import { MultiSelectProps } from "../types";
 import { SelectVariant } from "../types/select";
-import { isString, key, value } from "../utils/select";
+import { key, value, LOADER_OPTION_VALUE } from "../utils/select";
 
 export const MultiSelect = ({
   id,
@@ -30,6 +30,7 @@ export const MultiSelect = ({
   chipGroupProps,
   options,
   onClear,
+  children,
   ...rest
 }: MultiSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,6 +70,9 @@ export const MultiSelect = ({
         if (!isOpen) setIsOpen(false);
       }}
       onSelect={(_, value) => {
+        if (value === LOADER_OPTION_VALUE) {
+          return;
+        }
         onSelect?.((value as string) || "");
         onFilter?.("");
         setFilterValue("");
@@ -92,8 +96,7 @@ export const MultiSelect = ({
             <TextInputGroupMain
               placeholder={placeholderText}
               value={
-                variant === SelectVariant.typeahead &&
-                !!selections?.length
+                variant === SelectVariant.typeahead && !!selections?.length
                   ? selections[0]
                   : filterValue
               }
@@ -157,15 +160,17 @@ export const MultiSelect = ({
       )}
     >
       <SelectList>
-        {[...options].map((option) => (
-          <SelectOption
-            key={key(option)}
-            value={key(option)}
-            isSelected={selections?.includes(key(option))}
-          >
-            {isString(option) ? option : option.value}
-          </SelectOption>
-        ))}
+        {children
+          ? children
+          : [...options].map((option) => (
+              <SelectOption
+                key={key(option)}
+                value={key(option)}
+                isSelected={selections?.includes(key(option))}
+              >
+                {value(option)}
+              </SelectOption>
+            ))}
       </SelectList>
       {footer && <MenuFooter>{footer}</MenuFooter>}
     </Select>

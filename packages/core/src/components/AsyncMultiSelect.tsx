@@ -1,12 +1,16 @@
 import { SelectOption, Spinner } from "@patternfly/react-core";
 import { useCallback, useEffect, useState } from "react";
-import { OptionType, SingleSelectProps } from "../types";
+import { MultiSelectProps, OptionType } from "../types";
 import { key, LOADER_OPTION_VALUE, value } from "../utils/select";
-import { SingleSelect } from "./SingleSelect";
+import { MultiSelect } from "./MultiSelect";
 
-export type AsyncSingleSelectProps = Omit<SingleSelectProps, "options"> & {
+export type AsyncMultiSelectProps = Omit<MultiSelectProps, "options" | "onFilter"> & {
   pageSize?: number;
-  fetchOptions: (first: number, max: number) => Promise<ResponseType>;
+  fetchOptions: (
+    first: number,
+    max: number,
+    filter: string
+  ) => Promise<ResponseType>;
 };
 
 export type ResponseType = {
@@ -14,24 +18,21 @@ export type ResponseType = {
   hasMore: boolean;
 };
 
-export const AsyncSingleSelect = ({
-  onSelect,
+export const AsyncMultiSelect = ({
   fetchOptions,
   pageSize = 10,
   ...rest
-}: AsyncSingleSelectProps) => {
+}: AsyncMultiSelectProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [options, setOptions] = useState<OptionType>([]);
   const [first, setFirst] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const [filter, setFilter] = useState("");
 
   const loadOptions = useCallback(
-    async (
-      startIndex: number = 0,
-    ) => {
-      
+    async (startIndex: number = 0, filter: string = "") => {
       setIsLoading(true);
-      const response = await fetchOptions(startIndex, pageSize);
+      const response = await fetchOptions(startIndex, pageSize, filter);
       setIsLoading(false);
 
       if (startIndex === 0) {
@@ -52,19 +53,32 @@ export const AsyncSingleSelect = ({
     async (event?: React.MouseEvent) => {
       event?.stopPropagation();
       event?.preventDefault();
-      await loadOptions(first);
+      await loadOptions(first, filter);
     },
-    [loadOptions, first]
+    [loadOptions, first, filter]
   );
 
   useEffect(() => {
     loadOptions();
   }, [loadOptions]);
 
+  const updateFilter = useCallback(
+    (value: string): void => {
+      setFilter(value);
+      setOptions([]);
+      loadOptions(0, value);
+    },
+    [loadOptions]
+  );
+
   return (
-    <SingleSelect options={[]} onSelect={onSelect} {...rest}>
+    <MultiSelect
+      options={[]}
+      onFilter={updateFilter}
+      {...rest}
+    >
       {options.map((option) => (
-        <SelectOption key={key(option)} value={key(option)}>
+        <SelectOption key={key(option)} value={key(option)} isSelected={rest.selections?.includes(key(option))}>
           {value(option)}
         </SelectOption>
       ))}
@@ -78,6 +92,6 @@ export const AsyncSingleSelect = ({
           {isLoading ? <Spinner size="lg" /> : "View more"}
         </SelectOption>
       )}
-    </SingleSelect>
+    </MultiSelect>
   );
 };

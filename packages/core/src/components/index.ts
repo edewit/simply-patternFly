@@ -3,3 +3,4 @@ export { MultiSelect } from "./MultiSelect";
 export { Page } from "./Page";
 export { SingleSelect } from "./SingleSelect";
 export { AsyncSingleSelect } from "./AsyncSingleSelect";
+export { AsyncMultiSelect } from "./AsyncMultiSelect";
