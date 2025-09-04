@@ -62,7 +62,7 @@ export const useAsyncSelect = <T extends OptionType>({
   );
 
   const updateFilter = useCallback(
-    (value: string): void => {
+    (value?: string): void => {
       setFilter(value);
 
       // Only reload if the filter actually changed

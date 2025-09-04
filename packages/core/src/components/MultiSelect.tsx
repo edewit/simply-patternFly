@@ -104,7 +104,11 @@ export const MultiSelect = ({
               onClick={toggle}
               onChange={(_, value) => {
                 setFilterValue(value);
-                onFilter?.(value);
+                if (filterValue.length === 1 && value === "") {
+                  onFilter?.(undefined);
+                } else {
+                  onFilter?.(value);
+                }
               }}
               onKeyDown={(event) => onInputKeyDown(event)}
               autoComplete="off"

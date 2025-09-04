@@ -30,7 +30,7 @@ export const MultiValueSelect = ({
       onFilter={(value) => {
         setFilteredOptions(
           options.filter((option) =>
-            option.toLowerCase().startsWith(value.toLowerCase())
+            option.toLowerCase().startsWith(value?.toLowerCase() || "")
           )
         );
       }}

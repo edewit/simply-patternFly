@@ -29,7 +29,7 @@ export type SingleSelectProps = CommonSelectProps;
 
 export type MultiSelectProps = CommonSelectProps & {
   variant?: Variant;
-  onFilter?: (value: string) => void;
+  onFilter?: (value: string | undefined) => void;
   onClear?: () => void;
   menuAppendTo?: string;
   placeholderText?: string;
