@@ -7,7 +7,11 @@ type AsyncSelectResponse<T extends OptionType> = {
 };
 
 export type UseAsyncSelectOptions<T extends OptionType = OptionType> = {
-  fetchOptions: (first: number, max: number, filter?: string) => Promise<AsyncSelectResponse<T>>;
+  fetchOptions: (
+    first: number,
+    max: number,
+    filter?: string
+  ) => Promise<AsyncSelectResponse<T>>;
   pageSize?: number;
 };
 
@@ -15,14 +19,18 @@ export const useAsyncSelect = <T extends OptionType>({
   fetchOptions,
   pageSize = 10,
 }: {
-  fetchOptions: (first: number, max: number, filter?: string) => Promise<{options: T, hasMore: boolean}>;
+  fetchOptions: (
+    first: number,
+    max: number,
+    filter?: string
+  ) => Promise<{ options: T; hasMore: boolean }>;
   pageSize?: number;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [options, setOptions] = useState<T>([] as unknown as T);
   const [first, setFirst] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState<string | undefined>("");
 
   const loadOptions = useCallback(
     async (startIndex: number = 0, filterValue?: string) => {
@@ -31,10 +39,10 @@ export const useAsyncSelect = <T extends OptionType>({
       setIsLoading(false);
 
       if (startIndex === 0) {
-        setOptions(response.options);
+        setOptions(response.options as T);
       } else {
         setOptions(
-          (prevOptions) => [...prevOptions, ...response.options] as T
+          (prevOptions) => [...prevOptions, ...response.options] as unknown as T
         );
       }
 
@@ -48,7 +56,7 @@ export const useAsyncSelect = <T extends OptionType>({
     async (event?: React.MouseEvent) => {
       event?.stopPropagation();
       event?.preventDefault();
-      await loadOptions(first, filter || undefined);
+      await loadOptions(first, filter);
     },
     [loadOptions, first, filter]
   );
@@ -56,16 +64,19 @@ export const useAsyncSelect = <T extends OptionType>({
   const updateFilter = useCallback(
     (value: string): void => {
       setFilter(value);
-      setOptions([] as unknown as T);
-      setFirst(0);
-      loadOptions(0, value);
+
+      // Only reload if the filter actually changed
+      if (value !== "") {
+        loadOptions(0, value);
+      }
     },
     [loadOptions]
   );
 
   useEffect(() => {
     loadOptions();
-  }, [loadOptions]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
     isLoading,

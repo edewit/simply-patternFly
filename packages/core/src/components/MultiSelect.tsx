@@ -12,7 +12,7 @@ import {
   TextInputGroupUtilities,
 } from "@patternfly/react-core";
 import { TimesIcon } from "@patternfly/react-icons";
-import { useRef, useState } from "react";
+import { Children, ReactElement, useRef, useState } from "react";
 import { MultiSelectProps } from "../types";
 import { SelectVariant } from "../types/select";
 import { LOADER_OPTION_VALUE, key, value } from "../utils/select";
@@ -36,6 +36,7 @@ export const MultiSelect = ({
   const [isOpen, setIsOpen] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const textInputRef = useRef<HTMLInputElement>();
+  const childrenArray = Children.toArray(children) as ReactElement[];
 
   const toggle = () => {
     setIsOpen?.(!isOpen);
@@ -47,7 +48,7 @@ export const MultiSelect = ({
     switch (event.key) {
       case "Enter": {
         event.preventDefault();
-        onSelect?.(key(options[0]) || "");
+        onSelect?.(key(options?.[0] || "") || childrenArray[0].props.value || "");
         break;
       }
       case "Escape": {
@@ -76,7 +77,7 @@ export const MultiSelect = ({
         onSelect?.((value as string) || "");
         onFilter?.("");
         setFilterValue("");
-        if (variant === SelectVariant.typeahead) {
+        if (variant !== SelectVariant.typeaheadMulti) {
           setIsOpen(false);
         }
       }}
