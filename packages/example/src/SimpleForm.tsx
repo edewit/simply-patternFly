@@ -57,7 +57,7 @@ export const SimpleForm = () => {
             onFilter={(value) => {
               setFilteredOptions(
                 states.filter((option) =>
-                  option.toLowerCase().startsWith(value.toLowerCase())
+                  option.toLowerCase().startsWith(value?.toLowerCase() || "")
                 )
               );
             }}
@@ -76,6 +76,20 @@ export const SimpleForm = () => {
             }}
           />
         </FormLabel>
+        <MultiSelect
+          options={filteredOptions}
+          onFilter={(value) => {
+            setFilteredOptions(
+              states.filter((option) =>
+                option.toLowerCase().startsWith(value?.toLowerCase() || "")
+              )
+            );
+          }}
+          selections={[selected]}
+          onSelect={(value) => {
+            setSelected(value);
+          }}
+        />
         <AsyncSingleSelect
           value={asyncSingleSelectedOptions}
           onSelect={(value) => {

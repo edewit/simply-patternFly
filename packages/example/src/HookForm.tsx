@@ -1,7 +1,19 @@
-import { ActionGroup, Button, FemaleIcon, Form, Title } from "@simply-patternfly/core";
-import { MultiSelectField, SingleSelectField, TextField } from "@simply-patternfly/react-hook-form";
+import {
+  ActionGroup,
+  Button,
+  FemaleIcon,
+  Form,
+  Title,
+  type SimpleSelectOption,
+} from "@simply-patternfly/core";
+import {
+  AsyncSelectField,
+  MultiSelectField,
+  SingleSelectField,
+  TextField,
+} from "@simply-patternfly/react-hook-form";
 import { useForm } from "react-hook-form";
-import { states } from "./constants";
+import { countries, states } from "./constants";
 
 type FormData = {
   name: string;
@@ -10,6 +22,7 @@ type FormData = {
   gender: string;
   states: string[];
   hobbies: string[];
+  country: string[];
 };
 
 export const HookForm = () => {
@@ -22,6 +35,7 @@ export const HookForm = () => {
       gender: "",
       states: [],
       hobbies: [],
+      country: [],
     },
   });
 
@@ -103,7 +117,27 @@ export const HookForm = () => {
             required: "Don't be a boring person, choose at least one hobby",
           }}
         />
-        
+
+        <AsyncSelectField
+          variant="typeaheadMulti"
+          name="country"
+          label="Select countries that you have visited"
+          fetchOptions={(first, max, filter) =>
+            new Promise<{ options: SimpleSelectOption[]; hasMore: boolean }>((resolve) => {
+              setTimeout(() => {
+                const filteredCountries = countries.filter((country) =>
+                  country.value.toLowerCase().startsWith(filter?.toLowerCase() || "")
+                );
+                resolve({
+                  options: filteredCountries.slice(first, first + max),
+                  hasMore: first + max < countries.length,
+                });
+              }, 2000);
+            })
+          }
+          control={control}
+        />
+
         <ActionGroup>
           <Button variant="primary" type="submit">
             Submit

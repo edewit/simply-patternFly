@@ -64,7 +64,7 @@ export const MultiSelectField = <
         onFilter={(value) => {
           setFilteredOptions(
             props.options.filter((option) =>
-              getValue(option).toLowerCase().includes(value.toLowerCase())
+              getValue(option).toLowerCase().includes(value?.toLowerCase() || "")
             ) as OptionType
           );
         }}

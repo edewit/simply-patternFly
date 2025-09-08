@@ -48,16 +48,23 @@ export const MultiSelect = ({
     switch (event.key) {
       case "Enter": {
         event.preventDefault();
-        onSelect?.(key(options?.[0] || "") || childrenArray[0].props.value || "");
+        onSelect?.(
+          key(options?.[0] || "") || childrenArray[0]?.props?.value || ""
+        );
         break;
       }
       case "Escape": {
         setIsOpen(false);
         break;
       }
+      case "Delete":
       case "Backspace": {
         if (variant === SelectVariant.typeahead) {
           onSelect?.("");
+        }
+        // when the filter value was cleared, set the filter value to undefined so we can load the original options in the async select
+        if (variant === SelectVariant.typeaheadMulti && filterValue.length === 1) {
+          onFilter?.(undefined);
         }
         break;
       }
@@ -75,7 +82,7 @@ export const MultiSelect = ({
           return;
         }
         onSelect?.((value as string) || "");
-        onFilter?.("");
+        onFilter?.(variant === SelectVariant.typeahead ? "" : undefined);
         setFilterValue("");
         if (variant !== SelectVariant.typeaheadMulti) {
           setIsOpen(false);
@@ -96,19 +103,11 @@ export const MultiSelect = ({
           <TextInputGroup isPlain>
             <TextInputGroupMain
               placeholder={placeholderText}
-              value={
-                variant === SelectVariant.typeahead && !!selections?.length
-                  ? value(selections[0])
-                  : filterValue
-              }
+              value={(variant === SelectVariant.typeahead && value(selections?.[0] || "")) || filterValue}
               onClick={toggle}
               onChange={(_, value) => {
                 setFilterValue(value);
-                if (filterValue.length === 1 && value === "") {
-                  onFilter?.(undefined);
-                } else {
-                  onFilter?.(value);
-                }
+                onFilter?.(value);
               }}
               onKeyDown={(event) => onInputKeyDown(event)}
               autoComplete="off"
@@ -148,7 +147,7 @@ export const MultiSelect = ({
                       onClear?.();
                     }
                     setFilterValue("");
-                    onFilter?.("");
+                    onFilter?.(variant === SelectVariant.typeahead ? "" : undefined);
                     textInputRef?.current?.focus();
                   }}
                   aria-label="Clear input value"
@@ -168,7 +167,9 @@ export const MultiSelect = ({
               <SelectOption
                 key={key(option)}
                 value={key(option)}
-                isSelected={selections?.map((selection) => key(selection)).includes(key(option))}
+                isSelected={selections
+                  ?.map((selection) => key(selection))
+                  .includes(key(option))}
               >
                 {value(option)}
               </SelectOption>
