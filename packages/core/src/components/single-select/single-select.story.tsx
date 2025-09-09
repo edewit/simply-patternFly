@@ -1,4 +1,4 @@
-import { FormLabel } from "./FormLabel";
+import { FormLabel } from "../FormLabel";
 import { SingleSelect } from "./SingleSelect";
 import { useState } from "react";
 

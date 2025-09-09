@@ -13,9 +13,9 @@ import {
 } from "@patternfly/react-core";
 import { TimesIcon } from "@patternfly/react-icons";
 import { Children, ReactElement, useRef, useState } from "react";
-import { TypeaheadSelectProps } from "../types";
-import { SelectVariant } from "../types/select";
-import { LOADER_OPTION_VALUE, key, value } from "../utils/select";
+import { TypeaheadSelectProps } from "../../types";
+import { SelectVariant } from "../../types/select";
+import { LOADER_OPTION_VALUE, key, value } from "../../utils/select";
 
 export const TypeaheadSelect = ({
   id,

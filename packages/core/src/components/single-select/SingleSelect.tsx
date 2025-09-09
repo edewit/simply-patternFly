@@ -5,13 +5,13 @@ import {
   SelectOption,
 } from "@patternfly/react-core";
 import { useState } from "react";
-import { SingleSelectProps } from "../types";
+import { SingleSelectProps } from "../../types";
 import {
   value as getValue,
   isSelectBasedOptions,
   key,
   LOADER_OPTION_VALUE
-} from "../utils/select";
+} from "../../utils/select";
 
 export const SingleSelect = ({
   id,

@@ -1,7 +1,7 @@
 import { SelectOption, Spinner } from "@patternfly/react-core";
 import { SingleSelectProps, OptionType } from "../types";
 import { key, LOADER_OPTION_VALUE, value } from "../utils/select";
-import { SingleSelect } from "./SingleSelect";
+import { SingleSelect } from "./single-select/SingleSelect";
 import { useAsyncSelect } from "../hooks/useAsyncSelect";
 
 export type AsyncSingleSelectProps<T extends OptionType> = Omit<SingleSelectProps, "options"> & {

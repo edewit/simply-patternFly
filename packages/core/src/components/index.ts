@@ -1,6 +1,6 @@
 export { FormLabel, type FieldProps } from "./FormLabel";
-export { TypeaheadSelect } from "./TypeahedSelect";
+export { TypeaheadSelect } from "./typeahead/TypeahedSelect";
 export { Page } from "./Page";
-export { SingleSelect } from "./SingleSelect";
+export { SingleSelect } from "./single-select/SingleSelect";
 export { AsyncSingleSelect, type AsyncSingleSelectProps } from "./AsyncSingleSelect";
-export { AsyncTypeaheadSelect, type AsyncTypeaheadSelectProps } from "./AsyncTypeaheadSelect";
+export { AsyncTypeaheadSelect, type AsyncTypeaheadSelectProps } from "./async-typeahead/AsyncTypeaheadSelect";

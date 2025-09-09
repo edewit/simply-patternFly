@@ -1,8 +1,8 @@
 import { SelectOption, Spinner } from "@patternfly/react-core";
-import { TypeaheadSelectProps, OptionType, SimpleSelectOption } from "../types";
-import { key, LOADER_OPTION_VALUE, value } from "../utils/select";
-import { TypeaheadSelect } from "./TypeahedSelect";
-import { useAsyncSelect } from "../hooks/useAsyncSelect";
+import { TypeaheadSelectProps, OptionType, SimpleSelectOption } from "../../types";
+import { key, LOADER_OPTION_VALUE, value } from "../../utils/select";
+import { TypeaheadSelect } from "../typeahead/TypeahedSelect";
+import { useAsyncSelect } from "../../hooks/useAsyncSelect";
 
 export type AsyncTypeaheadSelectProps<T extends OptionType> = Omit<
   TypeaheadSelectProps,
