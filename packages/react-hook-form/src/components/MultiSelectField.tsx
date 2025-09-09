@@ -1,8 +1,9 @@
 import {
   FormLabel,
-  MultiSelect, MultiSelectProps,
   OptionType,
-  SelectVariant
+  SelectVariant,
+  TypeaheadSelectProps,
+  TypeaheadSelect,
 } from "@simply-patternfly/core";
 import { useState } from "react";
 import {
@@ -24,7 +25,7 @@ export type MultiSelectFieldProps<
   T extends FieldValues,
   P extends FieldPath<T> = FieldPath<T>
 > = UseControllerProps<T, P> &
-  Omit<MultiSelectProps, "name"> & {
+  Omit<TypeaheadSelectProps, "name"> & {
     name: P;
   } & FieldProps;
 
@@ -58,13 +59,15 @@ export const MultiSelectField = <
       error={fieldState.error?.message}
       helperText={helperText}
     >
-      <MultiSelect
+      <TypeaheadSelect
         {...rest}
         options={filteredOptions}
         onFilter={(value) => {
           setFilteredOptions(
             props.options.filter((option) =>
-              getValue(option).toLowerCase().includes(value?.toLowerCase() || "")
+              getValue(option)
+                .toLowerCase()
+                .includes(value?.toLowerCase() || "")
             ) as OptionType
           );
         }}

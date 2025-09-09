@@ -1,13 +1,13 @@
 import { expect, test } from "@playwright/experimental-ct-react";
-import { MultiValueSelect } from "./multi-select.story.tsx";
-import { MultiSelect } from "./MultiSelect";
+import { TypeaheadValueSelect } from "./typeahead-select.story.tsx";
+import { TypeaheadSelect } from "./TypeahedSelect.tsx";
 
-test.describe("MultiSelect", () => {
+test.describe("TypeaheadSelect", () => {
   test("select multiple options", async ({ mount, page }) => {
     let selectedValue: string[] = [];
 
     const component = await mount(
-      <MultiValueSelect onSelect={(value) => (selectedValue = value)} />
+      <TypeaheadValueSelect onSelect={(value) => (selectedValue = value)} />
     );
 
     const toggle = component.getByRole("combobox");
@@ -37,7 +37,7 @@ test.describe("MultiSelect", () => {
     let selectedValue: string[] = [];
 
     const component = await mount(
-      <MultiValueSelect onSelect={(value) => (selectedValue = value)} />
+      <TypeaheadValueSelect onSelect={(value) => (selectedValue = value)} />
     );
 
     const toggle = component.getByRole("combobox");
@@ -62,7 +62,7 @@ test.describe("MultiSelect", () => {
     let selectedValue: string[] = [];
 
     const component = await mount(
-      <MultiValueSelect onSelect={(value) => (selectedValue = value)} />
+      <TypeaheadValueSelect onSelect={(value) => (selectedValue = value)} />
     );
 
     const toggle = component.getByRole("combobox");
@@ -85,7 +85,7 @@ test.describe("MultiSelect", () => {
     let selectedValue: string[] = [];
 
     const component = await mount(
-      <MultiValueSelect onSelect={(value) => (selectedValue = value)} />
+      <TypeaheadValueSelect onSelect={(value) => (selectedValue = value)} />
     );
 
     const toggle = component.getByRole("combobox");
@@ -111,7 +111,7 @@ test.describe("MultiSelect", () => {
     let selectedValue: string[] = [];
 
     const component = await mount(
-      <MultiValueSelect onSelect={(value) => (selectedValue = value)} />
+      <TypeaheadValueSelect onSelect={(value) => (selectedValue = value)} />
     );
 
     const toggle = component.getByRole("combobox");
@@ -140,7 +140,7 @@ test.describe("MultiSelect", () => {
     let selectedValue: string[] = [];
 
     const component = await mount(
-      <MultiValueSelect onSelect={(value) => (selectedValue = value)} />
+      <TypeaheadValueSelect onSelect={(value) => (selectedValue = value)} />
     );
 
     const toggle = component.getByRole("combobox");
@@ -153,7 +153,7 @@ test.describe("MultiSelect", () => {
 
   test("keyboard navigation with Escape key", async ({ mount, page }) => {
     const component = await mount(
-      <MultiValueSelect onSelect={() => {}} />
+      <TypeaheadValueSelect onSelect={() => {}} />
     );
 
     const toggle = component.getByRole("combobox");
@@ -171,7 +171,7 @@ test.describe("MultiSelect", () => {
 
   test("disabled state", async ({ mount, page }) => {
     await mount(
-      <MultiSelect
+      <TypeaheadSelect
         variant="typeaheadMulti"
         options={["Option 1", "Option 2", "Option 3"]}
         isDisabled={true}
@@ -187,7 +187,7 @@ test.describe("MultiSelect", () => {
 
   test("render with initial selections", async ({ mount, page }) => {
     await mount(
-      <MultiSelect
+      <TypeaheadSelect
         variant="typeaheadMulti"
         options={["Option 1", "Option 2", "Option 3"]}
         selections={["Option 1", "Option 3"]}
@@ -204,7 +204,7 @@ test.describe("MultiSelect", () => {
 
   test("empty options array", async ({ mount, page }) => {
     const component = await mount(
-      <MultiSelect
+      <TypeaheadSelect
         options={[]}
         onSelect={() => {}}
       />
@@ -226,7 +226,7 @@ test.describe("MultiSelect", () => {
     ];
 
     const component = await mount(
-      <MultiSelect
+      <TypeaheadSelect
         variant="typeaheadMulti"
         options={objectOptions}
         onSelect={(value) => selectedValue = [...selectedValue, value]}
@@ -246,7 +246,7 @@ test.describe("MultiSelect", () => {
 
   test("focus management after selection", async ({ mount, page }) => {
     const component = await mount(
-      <MultiValueSelect onSelect={() => {}} />
+      <TypeaheadValueSelect onSelect={() => {}} />
     );
 
     const toggle = component.getByRole("combobox");

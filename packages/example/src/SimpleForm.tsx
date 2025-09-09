@@ -1,12 +1,12 @@
 import type { SimpleSelectOption } from "@simply-patternfly/core";
 import {
   ActionGroup,
-  AsyncMultiSelect,
+  AsyncTypeaheadSelect,
   AsyncSingleSelect,
   Button,
   Form,
   FormLabel,
-  MultiSelect,
+  TypeaheadSelect,
   SingleSelect,
   Title,
 } from "@simply-patternfly/core";
@@ -50,7 +50,7 @@ export const SimpleForm = () => {
           />
         </FormLabel>
         <FormLabel name="states" label="Multi Select">
-          <MultiSelect
+          <TypeaheadSelect
             id="states"
             variant="typeaheadMulti"
             options={filteredOptions}
@@ -76,7 +76,7 @@ export const SimpleForm = () => {
             }}
           />
         </FormLabel>
-        <MultiSelect
+        <TypeaheadSelect
           options={filteredOptions}
           onFilter={(value) => {
             setFilteredOptions(
@@ -107,7 +107,7 @@ export const SimpleForm = () => {
             })
           }
         />
-        <AsyncMultiSelect<string[]>
+        <AsyncTypeaheadSelect<string[]>
           variant="typeaheadMulti"
           selections={asyncSelectedOptions}
           onSelect={(value) => {
@@ -138,7 +138,7 @@ export const SimpleForm = () => {
           name="statesWithKey"
           label="States with Key (Object Options)"
         >
-          <AsyncMultiSelect<SimpleSelectOption[]>
+          <AsyncTypeaheadSelect<SimpleSelectOption[]>
             variant="typeaheadMulti"
             selections={asyncSelectedOptionsWithKey}
             onSelect={(value) => {

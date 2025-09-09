@@ -1,6 +1,6 @@
 export type {
   SingleSelectProps,
-  MultiSelectProps,
+  TypeaheadSelectProps,
   SimpleSelectOption,
   OptionType,
 } from "./select";

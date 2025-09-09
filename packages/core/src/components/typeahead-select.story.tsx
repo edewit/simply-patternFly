@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { MultiSelect } from "./MultiSelect";
+import { TypeaheadSelect } from "./TypeahedSelect";
 
-export const MultiValueSelect = ({
+export const TypeaheadValueSelect = ({
   onSelect,
 }: {
   onSelect: (value: string[]) => void;
@@ -21,7 +21,7 @@ export const MultiValueSelect = ({
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [filteredOptions, setFilteredOptions] = useState<string[]>(options);
   return (
-    <MultiSelect
+    <TypeaheadSelect
       chipGroupProps={{
         name: "group",
       }}

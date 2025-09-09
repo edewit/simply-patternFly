@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
-import { AsyncMultiSelect } from "./AsyncMultiSelect";
+import { AsyncTypeaheadSelect } from "./AsyncTypeaheadSelect";
 
-export const AsyncMultiValueSelect = ({
+export const AsyncTypeaheadValueSelect = ({
   onSelect,
 }: {
   onSelect: (value: string[]) => void;
@@ -40,7 +40,7 @@ export const AsyncMultiValueSelect = ({
     []
   );
   return (
-    <AsyncMultiSelect
+    <AsyncTypeaheadSelect
       chipGroupProps={{
         name: "group",
       }}

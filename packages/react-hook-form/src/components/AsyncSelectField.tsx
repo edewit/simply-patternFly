@@ -1,9 +1,9 @@
 import {
   FormLabel,
   AsyncSingleSelect,
-  AsyncMultiSelectProps,
+  AsyncTypeaheadSelectProps,
   OptionType,
-  AsyncMultiSelect,
+  AsyncTypeaheadSelect,
   SelectVariant,
 } from "@simply-patternfly/core";
 import {
@@ -21,7 +21,7 @@ export type AsyncSelectFieldProps<
   T extends FieldValues,
   P extends FieldPath<T> = FieldPath<T>
 > = UseControllerProps<T, P> &
-  Omit<AsyncMultiSelectProps<O>, "name" | "variant" | "onSelect" | "selections"> & {
+  Omit<AsyncTypeaheadSelectProps<O>, "name" | "variant" | "onSelect" | "selections"> & {
     name: P;
     variant?: "single" | "typeahead" | "typeaheadMulti";
   } & FieldProps;
@@ -69,7 +69,7 @@ export const AsyncSelectField = <
           status={fieldState.error ? "danger" : undefined}
         />
       ) : (
-        <AsyncMultiSelect
+        <AsyncTypeaheadSelect
           {...rest}
           variant={variant === "typeahead" ? SelectVariant.typeahead : SelectVariant.typeaheadMulti}
           selections={field.value}

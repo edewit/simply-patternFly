@@ -27,7 +27,7 @@ type CommonSelectProps = Omit<
 
 export type SingleSelectProps = CommonSelectProps;
 
-export type MultiSelectProps = CommonSelectProps & {
+export type TypeaheadSelectProps = CommonSelectProps & {
   variant?: Variant;
   onFilter?: (value: string | undefined) => void;
   onClear?: () => void;

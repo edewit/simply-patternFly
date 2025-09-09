@@ -1,11 +1,11 @@
 import { SelectOption, Spinner } from "@patternfly/react-core";
-import { MultiSelectProps, OptionType, SimpleSelectOption } from "../types";
+import { TypeaheadSelectProps, OptionType, SimpleSelectOption } from "../types";
 import { key, LOADER_OPTION_VALUE, value } from "../utils/select";
-import { MultiSelect } from "./MultiSelect";
+import { TypeaheadSelect } from "./TypeahedSelect";
 import { useAsyncSelect } from "../hooks/useAsyncSelect";
 
-export type AsyncMultiSelectProps<T extends OptionType> = Omit<
-  MultiSelectProps,
+export type AsyncTypeaheadSelectProps<T extends OptionType> = Omit<
+  TypeaheadSelectProps,
   "options" | "onFilter" | "onSelect" | "selections"
 > & {
   fetchOptions: (
@@ -18,12 +18,12 @@ export type AsyncMultiSelectProps<T extends OptionType> = Omit<
   pageSize?: number;
 };
 
-export const AsyncMultiSelect = <T extends OptionType>({
+export const AsyncTypeaheadSelect = <T extends OptionType>({
   fetchOptions,
   pageSize = 10,
   onSelect,
   ...rest
-}: AsyncMultiSelectProps<T>) => {
+}: AsyncTypeaheadSelectProps<T>) => {
   const { isLoading, options, hasMore, fetchMoreOptions, updateFilter } =
     useAsyncSelect<T>({
       fetchOptions,
@@ -31,7 +31,7 @@ export const AsyncMultiSelect = <T extends OptionType>({
     });
 
   return (
-    <MultiSelect
+    <TypeaheadSelect
       {...rest}
       options={[]}
       onFilter={updateFilter}
@@ -67,6 +67,6 @@ export const AsyncMultiSelect = <T extends OptionType>({
           {isLoading ? <Spinner size="lg" /> : "View more"}
         </SelectOption>
       )}
-    </MultiSelect>
+    </TypeaheadSelect>
   );
 };

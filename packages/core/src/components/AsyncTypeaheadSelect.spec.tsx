@@ -1,12 +1,12 @@
 import { expect, test } from "@playwright/experimental-ct-react";
-import { AsyncMultiValueSelect } from "./async-multi.story";
+import { AsyncTypeaheadValueSelect } from "./async-typeahead.story";
 
 test.describe("AsyncMultiSelect", () => {
   test("select multiple options", async ({ mount, page }) => {
     let selectedValue: string[] = [];
 
     const component = await mount(
-      <AsyncMultiValueSelect onSelect={(value) => (selectedValue = value)} />
+      <AsyncTypeaheadValueSelect onSelect={(value) => (selectedValue = value)} />
     );
 
     const toggle = component.getByRole("combobox");
@@ -32,7 +32,7 @@ test.describe("AsyncMultiSelect", () => {
 
   test("View more option loads additional options", async ({ mount, page }) => {
     const component = await mount(
-      <AsyncMultiValueSelect onSelect={() => {}} />
+      <AsyncTypeaheadValueSelect onSelect={() => {}} />
     );
 
     const toggle = component.getByRole("combobox");
@@ -62,7 +62,7 @@ test.describe("AsyncMultiSelect", () => {
 
   test("filtering works correctly", async ({ mount, page }) => {
     const component = await mount(
-      <AsyncMultiValueSelect onSelect={() => {}} />
+      <AsyncTypeaheadValueSelect onSelect={() => {}} />
     );
 
     const toggle = component.getByRole("combobox");
@@ -84,7 +84,7 @@ test.describe("AsyncMultiSelect", () => {
     let selectedValue: string[] = [];
 
     const component = await mount(
-      <AsyncMultiValueSelect onSelect={(value) => (selectedValue = value)} />
+      <AsyncTypeaheadValueSelect onSelect={(value) => (selectedValue = value)} />
     );
 
     const toggle = component.getByRole("combobox");
@@ -111,7 +111,7 @@ test.describe("AsyncMultiSelect", () => {
     let selectedValue: string[] = [];
 
     const component = await mount(
-      <AsyncMultiValueSelect onSelect={(value) => (selectedValue = value)} />
+      <AsyncTypeaheadValueSelect onSelect={(value) => (selectedValue = value)} />
     );
 
     const toggle = component.getByRole("combobox");
@@ -138,7 +138,7 @@ test.describe("AsyncMultiSelect", () => {
 
   test("loading state is displayed during async operations", async ({ mount, page }) => {
     const component = await mount(
-      <AsyncMultiValueSelect onSelect={() => {}} />
+      <AsyncTypeaheadValueSelect onSelect={() => {}} />
     );
 
     const toggle = component.getByRole("combobox");
@@ -166,7 +166,7 @@ test.describe("AsyncMultiSelect", () => {
     let selectedValue: string[] = [];
 
     const component = await mount(
-      <AsyncMultiValueSelect onSelect={(value) => (selectedValue = value)} />
+      <AsyncTypeaheadValueSelect onSelect={(value) => (selectedValue = value)} />
     );
 
     const toggle = component.getByRole("combobox");
@@ -185,7 +185,7 @@ test.describe("AsyncMultiSelect", () => {
 
   test("handles empty filter results", async ({ mount, page }) => {
     const component = await mount(
-      <AsyncMultiValueSelect onSelect={() => {}} />
+      <AsyncTypeaheadValueSelect onSelect={() => {}} />
     );
 
     const toggle = component.getByRole("combobox");
@@ -202,7 +202,7 @@ test.describe("AsyncMultiSelect", () => {
     let selectedValue: string[] = [];
 
     const component = await mount(
-      <AsyncMultiValueSelect onSelect={(value) => (selectedValue = value)} />
+      <AsyncTypeaheadValueSelect onSelect={(value) => (selectedValue = value)} />
     );
 
     const toggle = component.getByRole("combobox");
