@@ -1,4 +1,5 @@
 import {
+  AlertProvider,
   Brand,
   Button,
   List,
@@ -59,7 +60,9 @@ const App = () => {
           </ListItem>
         </List>
       </PageSection>
-      <PageSection>{select ? <SimpleForm /> : <HookForm />}</PageSection>
+      <PageSection>
+        <AlertProvider>{select ? <SimpleForm /> : <HookForm />}</AlertProvider>
+      </PageSection>
       <PageSection variant="secondary">
         <div>
           This example demonstrates the multi-module structure with core and

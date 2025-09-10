@@ -5,6 +5,7 @@ import {
   Form,
   Title,
   type SimpleSelectOption,
+  useAlerts,
 } from "@simply-patternfly/core";
 import {
   AsyncSelectField,
@@ -26,6 +27,7 @@ type FormData = {
 };
 
 export const HookForm = () => {
+  const { addAlert } = useAlerts()!;
   const { control, handleSubmit, reset } = useForm<FormData>({
     mode: "onChange",
     defaultValues: {
@@ -41,7 +43,7 @@ export const HookForm = () => {
 
   const onSubmit = (data: FormData) => {
     console.log("Form submitted:", data);
-    alert(`Hello ${data.name}! Your message has been received.`);
+    addAlert(`Hello ${data.name}! Your message has been received.`);
     reset();
   };
   return (
