@@ -1,0 +1,45 @@
+{
+  "folders": [
+    {
+      "name": "Root",
+      "path": "."
+    },
+    {
+      "name": "Core Package",
+      "path": "./packages/core"
+    },
+    {
+      "name": "Table Package", 
+      "path": "./packages/table"
+    },
+    {
+      "name": "React Hook Form Package",
+      "path": "./packages/react-hook-form"
+    },
+    {
+      "name": "Example App",
+      "path": "./packages/example"
+    }
+  ],
+  "settings": {
+    "playwright.testDir": [
+      "packages/core/src",
+      "packages/table/src"
+    ],
+    "playwright.testMatch": "**/*.spec.{ts,tsx}",
+    "testing.testDirectories": [
+      {
+        "path": "packages/core/src"
+      },
+      {
+        "path": "packages/table/src"
+      }
+    ],
+    "typescript.preferences.importModuleSpecifier": "relative"
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-playwright.playwright"
+    ]
+  }
+}

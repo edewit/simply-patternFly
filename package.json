@@ -8,7 +8,10 @@
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "preview": "pnpm --filter example preview",
-    "clean": "pnpm -r clean"
+    "clean": "pnpm -r clean",
+    "test-ct": "pnpm --filter core test-ct && pnpm --filter table test-ct",
+    "test-ct:core": "pnpm --filter core test-ct",
+    "test-ct:table": "pnpm --filter table test-ct"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
