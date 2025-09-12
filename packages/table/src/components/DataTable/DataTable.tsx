@@ -13,8 +13,8 @@ import {
 } from "@patternfly/react-table";
 import { get, intersectionBy } from "lodash-es";
 import { ReactNode, useEffect, useMemo, useState } from "react";
-import { Field, Row, SubRow } from "../types";
-import { CellRenderer, isRow } from "./CellRenderer";
+import { Field, Row, SubRow } from "../../types";
+import { CellRenderer, isRow } from "../CellRenderer";
 
 type DataTableProps<T> = {
   ariaLabelKey: string;

@@ -4,7 +4,7 @@ import {
   ToolbarItem,
 } from "@patternfly/react-core";
 import { PropsWithChildren, ReactNode } from "react";
-import { TableToolbar } from "./TableToolbar";
+import { TableToolbar } from "../TableToolbar";
 
 type KeycloakPaginationProps = {
   id?: string;

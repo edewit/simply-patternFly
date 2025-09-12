@@ -1,5 +1,5 @@
 import { IActions, IActionsResolver } from "@patternfly/react-table";
-import { Cell, Field, Row, SubRow } from "../types";
+import { Cell, Field, Row, SubRow } from "../../types";
 import { DataTable } from "./DataTable";
 
 // Test data types

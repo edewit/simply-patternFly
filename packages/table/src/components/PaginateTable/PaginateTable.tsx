@@ -16,10 +16,10 @@ import {
   LoaderFunction,
   Row,
   SubRow,
-} from "../types";
-import { DataTable } from "./DataTable";
-import { Loader } from "./Loader";
-import { PaginatingTableToolbar } from "./PaginateToolbar";
+} from "../../types";
+import { DataTable } from "../DataTable";
+import { Loader } from "../Loader";
+import { PaginatingTableToolbar } from "../PaginateToolbar";
 
 type DataListProps<T> = Omit<TableProps, "rows" | "cells" | "onSelect"> & {
   loader: LoaderFunction<T>;

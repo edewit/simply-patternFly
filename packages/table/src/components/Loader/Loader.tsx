@@ -1,6 +1,6 @@
 import { Skeleton } from "@patternfly/react-core";
 import { Table, Tbody, Td, Th, Thead, Tr } from "@patternfly/react-table";
-import { Field } from "../types";
+import { Field } from "../../types";
 
 type LoaderProps<T> = {
   columns: Field<T>[];
