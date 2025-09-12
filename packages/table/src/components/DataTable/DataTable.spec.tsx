@@ -132,19 +132,24 @@ test.describe("DataTable Component", () => {
   test("handles disabled selection for specific rows", async ({ mount }) => {
     const component = await mount(<DisabledSelectionStory />);
 
-    // Check that select all checkbox is present
-    const selectAllCheckbox = component.locator("thead input[type='checkbox']");
-    await expect(selectAllCheckbox).toBeVisible();
+    // First wait for the table data to render
+    await expect(component.getByText("John Doe")).toBeVisible();
+    await expect(component.getByText("Jane Smith")).toBeVisible();
+    await expect(component.getByText("Bob Johnson")).toBeVisible();
 
-    // Get all row checkboxes
+    // Get all row checkboxes first
     const rowCheckboxes = component.locator("tbody input[type='checkbox']");
     await expect(rowCheckboxes).toHaveCount(3);
 
-    // Second row (index 1) should be disabled
+    // Then check for select all checkbox (it should render after row checkboxes)
+    const selectAllCheckbox = component.locator("thead input[type='checkbox']");
+    await expect(selectAllCheckbox).toBeVisible();
+
+    // Second row (index 1) should be disabled (Jane Smith)
     const secondRowCheckbox = rowCheckboxes.nth(1);
     await expect(secondRowCheckbox).toBeDisabled();
 
-    // First and third rows should be enabled
+    // First and third rows should be enabled (John Doe and Bob Johnson)
     const firstRowCheckbox = rowCheckboxes.nth(0);
     const thirdRowCheckbox = rowCheckboxes.nth(2);
     await expect(firstRowCheckbox).toBeEnabled();

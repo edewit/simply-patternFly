@@ -203,6 +203,7 @@ export const DisabledSelectionStory = () => {
       rows={rows}
       canSelectAll={true}
       canSelect={true}
+      onSelect={(selected) => console.log("Selected:", selected)}
     />
   );
 };
