@@ -115,11 +115,11 @@ export function DataTable<T>({
       <Thead>
         <Tr>
           {onCollapse && <Th screenReaderText={"expandRow"} />}
-          {canSelectAll && (
+          {onSelect && (
             <Th
               screenReaderText={"selectAll"}
               select={
-                !isRadio
+                canSelectAll && !isRadio
                   ? {
                       onSelect: (_, isSelected) => {
                         updateState(-1, isSelected);

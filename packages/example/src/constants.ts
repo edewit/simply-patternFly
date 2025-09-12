@@ -155,3 +155,28 @@ export const countries = [
   { key: "VE", value: "Venezuela" },
   { key: "ZA", value: "South Africa" },
 ];
+
+export type User = {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+};
+
+export const tableData = [
+  { id: 1, name: "John Doe", age: 30, email: "john.doe@example.com" },
+  { id: 2, name: "Jane Doe", age: 25, email: "jane.doe@example.com" },
+  { id: 3, name: "Jim Doe", age: 20, email: "jim.doe@example.com" },
+  { id: 4, name: "Jill Doe", age: 22, email: "jill.doe@example.com" },
+  { id: 5, name: "Jack Doe", age: 23, email: "jack.doe@example.com" },
+  { id: 6, name: "Jill Doe", age: 22, email: "jill.doe@example.com" },
+  { id: 7, name: "Jack Doe", age: 23, email: "jack.doe@example.com" },
+  { id: 8, name: "Jill Doe", age: 22, email: "jill.doe@example.com" },
+  { id: 9, name: "Jack Doe", age: 23, email: "jack.doe@example.com" },
+  { id: 10, name: "Jill Doe", age: 22, email: "jill.doe@example.com" },
+  { id: 11, name: "Jack Doe", age: 23, email: "jack.doe@example.com" },
+  { id: 12, name: "Jill Doe", age: 22, email: "jill.doe@example.com" },
+  { id: 13, name: "Jack Doe", age: 23, email: "jack.doe@example.com" },
+  { id: 14, name: "Jill Doe", age: 22, email: "jill.doe@example.com" },
+  { id: 15, name: "Jack Doe", age: 23, email: "jack.doe@example.com" },
+];

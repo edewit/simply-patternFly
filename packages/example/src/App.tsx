@@ -17,9 +17,16 @@ import { HookForm } from "./HookForm";
 import { SimpleForm } from "./SimpleForm";
 
 import logo from "./assets/logo.svg";
+import { Table } from "./Table";
+
+const Section = {
+  SimpleForm: "SimpleForm",
+  HookForm: "HookForm",
+  Table: "Table",
+} as const;
 
 const App = () => {
-  const [select, setSelect] = useState(false);
+  const [select, setSelect] = useState<typeof Section[keyof typeof Section]>();
 
   return (
     <Page
@@ -49,19 +56,37 @@ const App = () => {
       <PageSection>
         <List>
           <ListItem>
-            <Button variant="link" onClick={() => setSelect(true)}>
+            <Button variant="link" onClick={() => setSelect(Section.SimpleForm)}>
               Simple Form
             </Button>
           </ListItem>
           <ListItem>
-            <Button variant="link" onClick={() => setSelect(false)}>
+            <Button variant="link" onClick={() => setSelect(Section.HookForm)}>
               Hook Form
+            </Button>
+          </ListItem>
+          <ListItem>
+            <Button variant="link" onClick={() => setSelect(Section.Table)}>
+              Table
             </Button>
           </ListItem>
         </List>
       </PageSection>
       <PageSection>
-        <AlertProvider>{select ? <SimpleForm /> : <HookForm />}</AlertProvider>
+        <AlertProvider>
+          {(() => {
+            switch (select) {
+              case Section.SimpleForm:
+                return <SimpleForm />;
+              case Section.HookForm:
+                return <HookForm />;
+              case Section.Table:
+                return <Table />;
+              default:
+                return null;
+            }
+          })()}
+        </AlertProvider>
       </PageSection>
       <PageSection variant="secondary">
         <div>

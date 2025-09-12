@@ -99,6 +99,9 @@ importers:
       '@simply-patternfly/react-hook-form':
         specifier: workspace:*
         version: link:../react-hook-form
+      '@simply-patternfly/table':
+        specifier: workspace:*
+        version: link:../table
       react:
         specifier: ^18.3.1
         version: 18.3.1

@@ -14,6 +14,7 @@
   "dependencies": {
     "@simply-patternfly/core": "workspace:*",
     "@simply-patternfly/react-hook-form": "workspace:*",
+    "@simply-patternfly/table": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.2"
