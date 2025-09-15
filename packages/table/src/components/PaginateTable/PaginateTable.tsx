@@ -35,7 +35,7 @@ type DataListProps<T> = Omit<TableProps, "rows" | "cells" | "onSelect"> & {
   searchTypeComponent?: ReactNode;
   toolbarItem?: ReactNode;
   subToolbar?: ReactNode;
-  emptyState?: (search: boolean) =>ReactNode;
+  emptyState?: (search: boolean) => ReactNode;
   icon?: ComponentClass;
   isNotCompact?: boolean;
   isRadio?: boolean;
@@ -63,6 +63,7 @@ export function PaginatingTable<T>({
   const [selected, setSelected] = useState<T[]>([]);
   const [rows, setRows] = useState<(Row<T> | SubRow<T>)[]>();
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
 
   const [max, setMax] = useState(10);
   const [first, setFirst] = useState(0);
@@ -136,14 +137,29 @@ export function PaginatingTable<T>({
         setFirst(0);
       }
       prevSearch.current = search;
-      const data =
+      const response =
         typeof loader === "function"
-          ? await loader(newSearch ? 0 : first, max + 1, search)
+          ? await loader(newSearch ? 0 : first, max, search)
           : loader;
       if (cancelled) return;
 
+      // Handle both old array format and new LoaderResponse format
+      let data: T[];
+      let hasMoreData: boolean;
+
+      if (Array.isArray(response)) {
+        // Legacy format: array with max + 1 items
+        data = response.slice(0, max);
+        hasMoreData = response.length > max;
+      } else {
+        // New format: LoaderResponse with data and hasMore
+        data = response.data;
+        hasMoreData = response.hasMore;
+      }
+
       const result = convertToColumns(data);
       setRows(result);
+      setHasMore(hasMoreData);
       setLoading(false);
     };
 
@@ -175,10 +191,12 @@ export function PaginatingTable<T>({
 
   // Update selection state in rows without triggering re-fetch
   const updateRowsWithSelection = useCallback(
-    (rows: (Row<T> | SubRow<T>)[] | undefined): (Row<T> | SubRow<T>)[] | undefined => {
+    (
+      rows: (Row<T> | SubRow<T>)[] | undefined
+    ): (Row<T> | SubRow<T>)[] | undefined => {
       if (!rows) return rows;
       return rows.map((row) => {
-        if ('data' in row) {
+        if ("data" in row) {
           return {
             ...row,
             selected: !!selected.find(
@@ -207,6 +225,7 @@ export function PaginatingTable<T>({
           count={rowLength}
           first={first}
           max={max}
+          hasMore={hasMore}
           onNextClick={setFirst}
           onPreviousClick={setFirst}
           onPerPageSelect={(first, max) => {
@@ -243,9 +262,7 @@ export function PaginatingTable<T>({
             />
           )}
           {loading && <Loader columns={columns} />}
-          {!loading && noData && searching && (
-            emptyState?.(searching)
-          )}
+          {!loading && noData && searching && emptyState?.(searching)}
         </PaginatingTableToolbar>
       )}
       {!loading && noData && !searching && emptyState?.(searching)}

@@ -33,11 +33,16 @@ export type SubRow<T> = BaseRow<T> & {
   parent: number;
 };
 
+export type LoaderResponse<T> = {
+  data: T[];
+  hasMore: boolean;
+};
+
 export type LoaderFunction<T> = (
   first: number,
   max: number,
   search?: string
-) => Promise<T[]>;
+) => Promise<T[] | LoaderResponse<T>>;
 
 export type Action<T> = IAction & {
   onRowClick?: (row: T) => Promise<boolean | void> | void;

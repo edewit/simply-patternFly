@@ -4,8 +4,9 @@ import {
   FemaleIcon,
   Form,
   Title,
-  type SimpleSelectOption,
   useAlerts,
+  type AsyncSelectResponse,
+  type SimpleSelectOption,
 } from "@simply-patternfly/core";
 import {
   AsyncSelectField,
@@ -125,17 +126,21 @@ export const HookForm = () => {
           name="country"
           label="Select countries that you have visited"
           fetchOptions={(first, max, filter) =>
-            new Promise<{ options: SimpleSelectOption[]; hasMore: boolean }>((resolve) => {
-              setTimeout(() => {
-                const filteredCountries = countries.filter((country) =>
-                  country.value.toLowerCase().startsWith(filter?.toLowerCase() || "")
-                );
-                resolve({
-                  options: filteredCountries.slice(first, first + max),
-                  hasMore: first + max < countries.length,
-                });
-              }, 2000);
-            })
+            new Promise<AsyncSelectResponse<SimpleSelectOption[]>>(
+              (resolve) => {
+                setTimeout(() => {
+                  const filteredCountries = countries.filter((country) =>
+                    country.value
+                      .toLowerCase()
+                      .startsWith(filter?.toLowerCase() || "")
+                  );
+                  resolve({
+                    options: filteredCountries.slice(first, first + max),
+                    hasMore: first + max < countries.length,
+                  });
+                }, 2000);
+              }
+            )
           }
           control={control}
         />

@@ -1,8 +1,15 @@
 import { SelectOption, Spinner } from "@patternfly/react-core";
-import { TypeaheadSelectProps, OptionType, SimpleSelectOption } from "../../types";
+import {
+  AsyncSelectResponse,
+  useAsyncSelect,
+} from "../../hooks/useAsyncSelect";
+import {
+  OptionType,
+  SimpleSelectOption,
+  TypeaheadSelectProps,
+} from "../../types";
 import { key, LOADER_OPTION_VALUE, value } from "../../utils/select";
 import { TypeaheadSelect } from "../typeahead/TypeahedSelect";
-import { useAsyncSelect } from "../../hooks/useAsyncSelect";
 
 export type AsyncTypeaheadSelectProps<T extends OptionType> = Omit<
   TypeaheadSelectProps,
@@ -12,7 +19,7 @@ export type AsyncTypeaheadSelectProps<T extends OptionType> = Omit<
     first: number,
     max: number,
     filter?: string
-  ) => Promise<{ options: T; hasMore: boolean }>;
+  ) => Promise<AsyncSelectResponse<T>>;
   onSelect: (value: T extends string[] ? string : SimpleSelectOption) => void;
   selections: T extends string[] ? string[] : SimpleSelectOption[];
   pageSize?: number;

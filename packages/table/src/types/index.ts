@@ -1,11 +1,12 @@
 export type {
-  Field,
+  Action,
+  BaseRow,
+  Cell,
   DetailField,
+  Field,
+  LoaderFunction,
+  LoaderResponse,
   Row,
   SubRow,
-  BaseRow,
-  TitleCell,
-  Cell,
-  LoaderFunction,
-  Action,
+  TitleCell
 } from "./table";

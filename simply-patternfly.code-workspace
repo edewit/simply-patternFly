@@ -35,7 +35,8 @@
         "path": "packages/table/src"
       }
     ],
-    "typescript.preferences.importModuleSpecifier": "relative"
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "testing.automaticallyOpenTestResults": false
   },
   "extensions": {
     "recommendations": [

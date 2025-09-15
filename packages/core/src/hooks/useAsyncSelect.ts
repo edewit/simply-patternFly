@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { OptionType } from "../types";
 
-type AsyncSelectResponse<T extends OptionType> = {
+export type AsyncSelectResponse<T extends OptionType> = {
   options: T;
   hasMore: boolean;
 };
@@ -23,7 +23,7 @@ export const useAsyncSelect = <T extends OptionType>({
     first: number,
     max: number,
     filter?: string
-  ) => Promise<{ options: T; hasMore: boolean }>;
+  ) => Promise<AsyncSelectResponse<T>>;
   pageSize?: number;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -75,7 +75,7 @@ export const useAsyncSelect = <T extends OptionType>({
 
   useEffect(() => {
     loadOptions();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {

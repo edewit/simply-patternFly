@@ -1,14 +1,17 @@
-import type { SimpleSelectOption } from "@simply-patternfly/core";
+import type {
+  AsyncSelectResponse,
+  SimpleSelectOption,
+} from "@simply-patternfly/core";
 import {
   ActionGroup,
-  AsyncTypeaheadSelect,
   AsyncSingleSelect,
+  AsyncTypeaheadSelect,
   Button,
   Form,
   FormLabel,
-  TypeaheadSelect,
   SingleSelect,
   Title,
+  TypeaheadSelect,
 } from "@simply-patternfly/core";
 import { useState } from "react";
 import { states, statesWithKey } from "./constants";
@@ -97,7 +100,7 @@ export const SimpleForm = () => {
           }}
           pageSize={5}
           fetchOptions={(first, max) =>
-            new Promise<{ options: string[]; hasMore: boolean }>((resolve) => {
+            new Promise<AsyncSelectResponse<string[]>>((resolve) => {
               setTimeout(() => {
                 resolve({
                   options: states.slice(first, first + max),
@@ -121,7 +124,7 @@ export const SimpleForm = () => {
           }}
           pageSize={7}
           fetchOptions={(first, max, filter) =>
-            new Promise<{ options: string[]; hasMore: boolean }>((resolve) => {
+            new Promise<AsyncSelectResponse<string[]>>((resolve) => {
               setTimeout(() => {
                 const filteredStates = states.filter((state) =>
                   state.toLowerCase().startsWith(filter?.toLowerCase() || "")
@@ -161,7 +164,7 @@ export const SimpleForm = () => {
             }}
             pageSize={5}
             fetchOptions={(first, max, filter) =>
-              new Promise<{ options: SimpleSelectOption[]; hasMore: boolean }>(
+              new Promise<AsyncSelectResponse<SimpleSelectOption[]>>(
                 (resolve) => {
                   setTimeout(() => {
                     const filteredStates = statesWithKey.filter((state) =>

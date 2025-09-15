@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { AsyncSelectResponse } from "../../hooks/useAsyncSelect";
 import { AsyncTypeaheadSelect } from "./AsyncTypeaheadSelect";
 
 export const AsyncTypeaheadValueSelect = ({
@@ -12,7 +13,7 @@ export const AsyncTypeaheadValueSelect = ({
       first: number,
       max: number,
       filter?: string
-    ): Promise<{ options: string[]; hasMore: boolean }> => {
+    ): Promise<AsyncSelectResponse<string[]>> => {
       const allOptions = [
         "one",
         "two",
@@ -25,11 +26,13 @@ export const AsyncTypeaheadValueSelect = ({
         "nine",
         "ten",
       ];
-      
-      const filteredOptions = filter 
-        ? allOptions.filter(option => option.toLowerCase().includes(filter.toLowerCase()))
+
+      const filteredOptions = filter
+        ? allOptions.filter((option) =>
+            option.toLowerCase().includes(filter.toLowerCase())
+          )
         : allOptions;
-        
+
       return new Promise((resolve) => {
         resolve({
           options: filteredOptions.slice(first, first + max),

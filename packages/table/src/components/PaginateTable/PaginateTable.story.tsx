@@ -1,5 +1,6 @@
 import { EmptyState, EmptyStateBody } from "@patternfly/react-core";
 import { cellWidth } from "@patternfly/react-table";
+import { LoaderResponse } from "../../types";
 import { PaginatingTable } from "./PaginateTable";
 
 // Test data types
@@ -13,53 +14,140 @@ type TestUser = {
 
 // Test data
 const testUsers: TestUser[] = [
-  { id: 1, name: "John Doe", age: 30, email: "john.doe@example.com", status: "Active" },
-  { id: 2, name: "Jane Smith", age: 25, email: "jane.smith@example.com", status: "Inactive" },
-  { id: 3, name: "Bob Johnson", age: 35, email: "bob.johnson@example.com", status: "Active" },
-  { id: 4, name: "Alice Brown", age: 28, email: "alice.brown@example.com", status: "Active" },
-  { id: 5, name: "Charlie Wilson", age: 32, email: "charlie.wilson@example.com", status: "Inactive" },
-  { id: 6, name: "Diana Davis", age: 27, email: "diana.davis@example.com", status: "Active" },
-  { id: 7, name: "Edward Miller", age: 29, email: "edward.miller@example.com", status: "Active" },
-  { id: 8, name: "Fiona Garcia", age: 31, email: "fiona.garcia@example.com", status: "Inactive" },
-  { id: 9, name: "George Martinez", age: 26, email: "george.martinez@example.com", status: "Active" },
-  { id: 10, name: "Helen Rodriguez", age: 33, email: "helen.rodriguez@example.com", status: "Active" },
-  { id: 11, name: "Ian Lopez", age: 24, email: "ian.lopez@example.com", status: "Inactive" },
-  { id: 12, name: "Julia Taylor", age: 34, email: "julia.taylor@example.com", status: "Active" },
+  {
+    id: 1,
+    name: "John Doe",
+    age: 30,
+    email: "john.doe@example.com",
+    status: "Active",
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    age: 25,
+    email: "jane.smith@example.com",
+    status: "Inactive",
+  },
+  {
+    id: 3,
+    name: "Bob Johnson",
+    age: 35,
+    email: "bob.johnson@example.com",
+    status: "Active",
+  },
+  {
+    id: 4,
+    name: "Alice Brown",
+    age: 28,
+    email: "alice.brown@example.com",
+    status: "Active",
+  },
+  {
+    id: 5,
+    name: "Charlie Wilson",
+    age: 32,
+    email: "charlie.wilson@example.com",
+    status: "Inactive",
+  },
+  {
+    id: 6,
+    name: "Diana Davis",
+    age: 27,
+    email: "diana.davis@example.com",
+    status: "Active",
+  },
+  {
+    id: 7,
+    name: "Edward Miller",
+    age: 29,
+    email: "edward.miller@example.com",
+    status: "Active",
+  },
+  {
+    id: 8,
+    name: "Fiona Garcia",
+    age: 31,
+    email: "fiona.garcia@example.com",
+    status: "Inactive",
+  },
+  {
+    id: 9,
+    name: "George Martinez",
+    age: 26,
+    email: "george.martinez@example.com",
+    status: "Active",
+  },
+  {
+    id: 10,
+    name: "Helen Rodriguez",
+    age: 33,
+    email: "helen.rodriguez@example.com",
+    status: "Active",
+  },
+  {
+    id: 11,
+    name: "Ian Lopez",
+    age: 24,
+    email: "ian.lopez@example.com",
+    status: "Inactive",
+  },
+  {
+    id: 12,
+    name: "Julia Taylor",
+    age: 34,
+    email: "julia.taylor@example.com",
+    status: "Active",
+  },
 ];
 
 // Mock async loader that simulates API calls
-const createMockLoader = (data: TestUser[], delay: number = 500) => 
-  async (first: number, max: number, search?: string): Promise<TestUser[]> => {
+const createMockLoader =
+  (data: TestUser[], delay: number = 500) =>
+  async (
+    first: number,
+    max: number,
+    search?: string
+  ): Promise<LoaderResponse<TestUser>> => {
     return new Promise((resolve) => {
       setTimeout(() => {
         let filteredData = data;
-        
+
         if (search) {
-          filteredData = data.filter(user =>
-            user.name.toLowerCase().includes(search.toLowerCase()) ||
-            user.email.toLowerCase().includes(search.toLowerCase())
+          filteredData = data.filter(
+            (user) =>
+              user.name.toLowerCase().includes(search.toLowerCase()) ||
+              user.email.toLowerCase().includes(search.toLowerCase())
           );
         }
-        
+
         const result = filteredData.slice(first, first + max);
-        resolve(result);
+        const hasMore = first + max < filteredData.length;
+        resolve({ data: result, hasMore });
       }, delay);
     });
   };
 
 // Synchronous loader for faster tests
-const createSyncLoader = (data: TestUser[]) => 
-  async (first: number, max: number, search?: string): Promise<TestUser[]> => {
+const createSyncLoader =
+  (data: TestUser[]) =>
+  async (
+    first: number,
+    max: number,
+    search?: string
+  ): Promise<LoaderResponse<TestUser>> => {
     let filteredData = data;
-    
+
     if (search) {
-      filteredData = data.filter(user =>
-        user.name.toLowerCase().includes(search.toLowerCase()) ||
-        user.email.toLowerCase().includes(search.toLowerCase())
+      filteredData = data.filter(
+        (user) =>
+          user.name.toLowerCase().includes(search.toLowerCase()) ||
+          user.email.toLowerCase().includes(search.toLowerCase())
       );
     }
-    
-    return filteredData.slice(first, first + max);
+
+    const result = filteredData.slice(first, first + max);
+    const hasMore = first + max < filteredData.length;
+    return { data: result, hasMore };
   };
 
 // Basic columns configuration
@@ -152,7 +240,10 @@ export const EmptyStateStory = () => (
     loader={createSyncLoader([])}
     columns={basicColumns}
     emptyState={(searching) => (
-      <EmptyState titleText={searching ? "No search results" : "No data"} headingLevel="h4">
+      <EmptyState
+        titleText={searching ? "No search results" : "No data"}
+        headingLevel="h4"
+      >
         <EmptyStateBody>
           {searching ? "Try adjusting your search criteria" : "No users found"}
         </EmptyStateBody>

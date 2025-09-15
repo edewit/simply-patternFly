@@ -11,6 +11,7 @@ type KeycloakPaginationProps = {
   count: number;
   first: number;
   max: number;
+  hasMore?: boolean;
   onNextClick: (page: number) => void;
   onPreviousClick: (page: number) => void;
   onPerPageSelect: (max: number, first: number) => void;
@@ -32,11 +33,16 @@ const KeycloakPagination = ({
   count,
   first,
   max,
+  hasMore = false,
   onNextClick,
   onPreviousClick,
   onPerPageSelect,
 }: KeycloakPaginationProps) => {
   const page = Math.round(first / max);
+  // Use hasMore to determine if we should show more items available
+  // If hasMore is true, we add an extra page to show "..." in pagination
+  const totalItems = hasMore ? count + page * max + max : count + page * max;
+
   return (
     <Pagination
       widgetId={id}
@@ -52,7 +58,7 @@ const KeycloakPagination = ({
           {firstIndex} - {lastIndex}
         </b>
       )}
-      itemCount={count + page * max}
+      itemCount={totalItems}
       page={page + 1}
       perPage={max}
       onNextClick={(_, p) => onNextClick((p - 1) * max)}

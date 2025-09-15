@@ -44,7 +44,7 @@ export const Table = () => {
         isChecked={selectable}
         onChange={(_event, checked) => setSelectable(checked)}
       />
-      <div style={{ marginLeft: '20px' }}>
+      <div style={{ marginLeft: "20px" }}>
         <Checkbox
           label="Can select all"
           id="toggle-can-select-all"
@@ -58,7 +58,7 @@ export const Table = () => {
           onChange={(_event, checked) => setRadio(checked)}
         />
       </div>
-      
+
       <br />
       <PaginatingTable<User>
         ariaLabelKey="Table"
@@ -70,9 +70,9 @@ export const Table = () => {
           useSearchComponent ? <SearchComponent /> : undefined
         }
         loader={(f, m, s) =>
-          new Promise<typeof tableData>((resolve) => {
+          new Promise((resolve) => {
             if (noDataState) {
-              resolve([]);
+              resolve({ data: [], hasMore: false });
               return;
             }
             setTimeout(() => {
@@ -81,7 +81,11 @@ export const Table = () => {
                     user.name.toLowerCase().includes(s?.toLowerCase() || "")
                   )
                 : tableData;
-              resolve(filteredData.slice(f, f + m));
+
+              const data = filteredData.slice(f, f + m);
+              const hasMore = f + m < filteredData.length;
+
+              resolve({ data, hasMore });
             }, 1000);
           })
         }
@@ -98,7 +102,9 @@ export const Table = () => {
           {
             name: "email",
             displayKey: "Email",
-            cellRenderer: ({ email }) => <a href={`mailto:${email}`}>{email}</a>,
+            cellRenderer: ({ email }) => (
+              <a href={`mailto:${email}`}>{email}</a>
+            ),
           },
         ]}
         actions={[
